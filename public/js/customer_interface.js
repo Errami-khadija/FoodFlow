@@ -699,10 +699,79 @@ window.closeRestaurantRegister = function() {
     document.getElementById('restaurant-register-form').reset();
 }
 
-document.getElementById('restaurant-register-form')
-  .addEventListener('submit', function() {
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-  });
+
+  document.getElementById("restaurant-register-form").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    let form = this;
+    let formData = new FormData(form);
+
+    // clear previous errors
+    document.querySelectorAll(".error-message").forEach(el=>{
+        el.innerText = "";
+    });
+
+    fetch("/restaurant/register", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: formData
+    })
+
+    .then(async response => {
+
+        if(response.status === 422){
+
+            let data = await response.json();
+
+            Object.keys(data.errors).forEach(field => {
+
+                let errorElement = document.getElementById(field + "_error");
+
+                if(errorElement){
+                    errorElement.innerText = data.errors[field][0];
+                }
+
+            });
+
+            Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please fix the errors in the form"
+            });
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        if(data.success){
+
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: data.message
+            });
+
+            form.reset();
+        }
+
+    })
+
+    .catch(error => {
+
+        Swal.fire({
+            icon: "error",
+            title: "Server Error",
+            text: "Something went wrong"
+        });
+
+    });
+
+});
 (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d63c070652de27d',t:'MTc3MjQ4OTYzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();

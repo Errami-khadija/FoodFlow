@@ -9,8 +9,8 @@ class Restaurant extends Model
 {   use HasFactory;
 
     protected $fillable = [
-        'user_id', 'name', 'cuisine_type', 'rating', 'description',
-        'phone', 'address', 'city', 'state', 'zip', 'is_approved'
+       'user_id', 'name', 'cuisine_type', 'rating', 'description', 
+    'phone', 'address', 'city', 'is_approved'
     ];
 
     public function owner()

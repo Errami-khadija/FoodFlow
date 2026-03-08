@@ -22,12 +22,15 @@
                 {{ session('success') }}
             </div>
         @endif
+       
 
         <!-- Form -->
         <form action="{{ route('restaurant.register.store') }}" 
               method="POST" 
+              id="restaurant-register-form"
               class="p-6 space-y-6">
             @csrf
+
 
             <!-- Section 1 -->
             <div>
@@ -40,26 +43,33 @@
 
                 <div class="space-y-4">
 
-                    <input type="text" name="restaurant_name" 
-                        placeholder="Restaurant Name *"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                        required>
-
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <input type="text" name="cuisine_type"
-                            placeholder="Cuisine Type *"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                            required>
-
-                        <input type="number" step="0.1" name="rating"
-                            placeholder="Rating (1-5)"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
+                   <input type="text" name="restaurant_name"
+    placeholder="Restaurant Name *"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="restaurant_name_error"></p>
+<div class="grid sm:grid-cols-2 gap-4">
+    <div>
+<input type="text" name="cuisine_type"
+    placeholder="Cuisine Type *"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="cuisine_type_error"></p>
+</div>
+<div>
+                       <input type="number" step="0.1" name="rating"
+    placeholder="Rating (1-5)"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
+<p class="text-red-500 text-sm error-message" id="rating_error"></p>
+</div>
                     </div>
 
-                    <textarea name="description" rows="3"
-                        placeholder="Restaurant Description *"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none resize-none"
-                        required></textarea>
+                   <textarea name="description" rows="3"
+    placeholder="Restaurant Description *"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none resize-none"
+    required></textarea>
+<p class="text-red-500 text-sm error-message" id="description_error"></p>
+<p class="text-red-500 text-sm error-message" id="description_error"></p>
 
                 </div>
             </div>
@@ -79,42 +89,59 @@
                         placeholder="Owner Name *"
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
                         required>
-
+                    <p class="text-red-500 text-sm error-message" id="owner_name_error"></p>
                     <input type="email" name="email"
-                        placeholder="Email *"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                        required>
-
+    placeholder="Email *"
+    autocomplete="email"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="email_error"></p>
                     <div class="grid sm:grid-cols-2 gap-4">
-                        <input type="password" name="password"
-                            placeholder="Password *"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                            required>
-
-                        <input type="password" name="password_confirmation"
-                            placeholder="Confirm Password *"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                            required>
-                    </div>
+                       <div><input type="password" name="password"
+    placeholder="Password *"
+    autocomplete="new-password"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="password_error"></p>
+</div>
+<div>
+<input type="password" name="password_confirmation"
+    placeholder="Confirm Password *"
+    autocomplete="new-password"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="password_confirmation_error"></p>
+</div>                    
+</div>
 
                     <input type="text" name="phone"
-                        placeholder="Phone *"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                        required>
+    placeholder="Phone *"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="phone_error"></p>
+                 <input type="text" name="city"
+    placeholder="City *"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="city_error"></p>
 
-                    <input type="text" name="address"
-                        placeholder="Address *"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
-                        required>
+                  <input type="text" name="address"
+    placeholder="Address *"
+    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
+    required>
+<p class="text-red-500 text-sm error-message" id="address_error"></p>
+                   
+                    
 
                 </div>
             </div>
 
             <!-- Terms -->
-            <label class="flex items-center gap-2 text-sm">
-                <input type="checkbox" name="terms_agree" required>
-                I agree to the terms and conditions
-            </label>
+          <label class="flex items-center gap-2 text-sm">
+    <input type="checkbox" name="terms_agree">
+    I agree to the terms and conditions
+</label>
+<p class="text-red-500 text-sm error-message" id="terms_agree_error"></p>
 
             <!-- Submit -->
             <button type="submit"

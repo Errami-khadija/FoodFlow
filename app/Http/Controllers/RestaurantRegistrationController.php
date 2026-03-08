@@ -7,31 +7,41 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 class RestaurantRegistrationController extends Controller
+
 {
     public function showForm()
     {
         return view('customer interface.restaurant-register'); 
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'owner_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed', 
-            'restaurant_name' => 'required|string|max:255',
-            'cuisine_type' => 'required|string|max:255',
-            'rating' => 'nullable|numeric|min:0|max:5',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'zip' => 'nullable|string|max:20',
-            'terms_agree' => 'accepted',
-        ]);
+public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'owner_name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6|confirmed',
+        'restaurant_name' => 'required|string|max:255',
+        'cuisine_type' => 'required|string|max:255',
+        'rating' => 'nullable|numeric|min:0|max:5',
+        'phone' => 'required|string|max:20',
+        'address' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
+        'terms_agree' => 'accepted',
+    ]);
 
-        // 1 Create user for restaurant owner
+    if ($validator->fails()) {
+        return response()->json([
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    try {
+
+        DB::beginTransaction();
+
         $user = User::create([
             'name' => $request->owner_name,
             'email' => $request->email,
@@ -40,7 +50,6 @@ class RestaurantRegistrationController extends Controller
             'is_approved' => false,
         ]);
 
-        // 2 Create restaurant linked to user
         Restaurant::create([
             'user_id' => $user->id,
             'name' => $request->restaurant_name,
@@ -50,11 +59,23 @@ class RestaurantRegistrationController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'city' => $request->city,
-            'state' => $request->state,
-            'zip' => $request->zip,
             'is_approved' => false,
         ]);
 
-        return redirect()->back()->with('success', 'Your restaurant is registered! Waiting for admin approval.');
+        DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Restaurant registered successfully! Your account is awaiting admin approval. You will receive a confirmation email once approved.'
+        ]);
+
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+
+        return response()->json([
+            'error' => 'Registration failed'
+        ], 500);
     }
+}
 }
