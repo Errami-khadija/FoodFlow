@@ -50,10 +50,25 @@
 <p class="text-red-500 text-sm error-message" id="restaurant_name_error"></p>
 <div class="grid sm:grid-cols-2 gap-4">
     <div>
-<input type="text" name="cuisine_type"
-    placeholder="Cuisine Type *"
+<select name="cuisine_type"
     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none"
     required>
+
+    <option value="" disabled selected>Select Cuisine Type *</option>
+
+    <option value="Moroccan">Moroccan</option>
+    <option value="Italian">Italian</option>
+    <option value="French">French</option>
+    <option value="Chinese">Chinese</option>
+    <option value="Japanese">Japanese</option>
+    <option value="Indian">Indian</option>
+    <option value="Fast Food">Fast Food</option>
+    <option value="Seafood">Seafood</option>
+    <option value="Cafe">Cafe</option>
+    <option value="Other">Other</option>
+
+</select>
+
 <p class="text-red-500 text-sm error-message" id="cuisine_type_error"></p>
 </div>
 <div>

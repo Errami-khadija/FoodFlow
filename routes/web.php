@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\RestaurantController as AdminRestaurantController;
+use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\RestaurantRegistrationController;
@@ -22,7 +22,7 @@ Route::post('/restaurant/register', [RestaurantRegistrationController::class, 's
 Route::middleware(['auth', 'role:restaurant'])
     ->prefix('restaurant')
     ->group(function () {
-        Route::get('/dashboard', [RestaurantDashboardController::class, 'index'])
+        Route::get('/dashboard', [AdminRestaurantController::class, 'restaurants'])
             ->name('restaurant.dashboard');
     });
 
@@ -30,6 +30,8 @@ Route::middleware(['auth', 'role:restaurant'])
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->group(function () {
+        Route::get('/restaurants', [RestaurantController::class, 'restaurants'])
+            ->name('admin.restaurants');
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('admin.dashboard');
         Route::patch('/restaurants/{id}/approve', [AdminRestaurantController::class, 'approve'])

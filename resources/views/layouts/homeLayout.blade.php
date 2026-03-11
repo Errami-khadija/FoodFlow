@@ -40,6 +40,7 @@
     <footer class="bg-white shadow p-4 mt-8 text-center text-sm text-gray-500">
         &copy; 2026 FoodFlow. All rights reserved.
     </footer>
+ <script src="{{ asset('js/customer_interface.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

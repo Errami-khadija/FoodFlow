@@ -624,7 +624,7 @@
    </div>
   </div>
  
-  <script src="{{ asset('js/customer_interface.js') }}"></script>
+ 
 <script>
 document.getElementById('cta-secondary-btn').addEventListener('click', () => {
     openRestaurantRegister();
