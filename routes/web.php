@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\RestaurantRegistrationController;
@@ -36,6 +38,11 @@ Route::middleware(['auth', 'role:admin'])
             ->name('admin.dashboard');
         Route::patch('/restaurants/{id}/approve', [RestaurantController::class, 'approve'])
     ->name('admin.restaurants.approve');
+       Route::get('/users', [UserController::class, 'index'])
+            ->name('admin.users');
+       Route::get('/orders', [OrderController::class, 'index'])
+            ->name('admin.orders');
+
     });
 
 
