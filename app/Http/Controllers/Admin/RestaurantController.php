@@ -9,9 +9,27 @@ use App\Models\Restaurant;
 class RestaurantController extends Controller
 {
 
-public function restaurants()
+
+public function restaurants(Request $request)
 {
-$restaurants = Restaurant::with('owner')->get();
+    $query = Restaurant::with('owner');
+
+    // Filter by status if provided
+    if ($request->status) {
+        if ($request->status === 'Active') {
+            $query->where('is_approved', true);
+        } elseif ($request->status === 'Suspended') {
+            $query->where('is_approved', false);
+        }
+    }
+
+     // Search by name
+    if ($request->search) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    $restaurants = $query->paginate(10)->withQueryString(); 
+
     return view('admin_panel.index', [
         'section' => 'admin_panel.sections.restaurants.index', 
         'restaurants' => $restaurants

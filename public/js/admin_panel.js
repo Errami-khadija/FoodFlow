@@ -92,6 +92,7 @@
     function openRestaurantDetails(details) {
       const modal = document.getElementById('details-modal');
       
+      document.getElementById('details-id').textContent = details.id;
       document.getElementById('details-name').textContent = details.name;
       document.getElementById('details-status').textContent = details.status;
       document.getElementById('details-rating').textContent = details.rating;
@@ -105,6 +106,25 @@
       document.getElementById('details-owner').textContent = details.owner;
       document.getElementById('details-cuisine').textContent = details.cuisine;
       document.getElementById('details-joined').textContent = details.joined;
+
+        
+    document.getElementById('approve-form').action =
+        `/admin/restaurants/${details.id}/approve`;
+
+        const approveBtn = document.getElementById('approve-btn');
+
+    if (details.status === 'Active') {
+        approveBtn.disabled = true;
+        approveBtn.textContent = "Already Approved";
+        approveBtn.classList.remove("bg-emerald-500","hover:bg-emerald-600");
+        approveBtn.classList.add("bg-gray-300","cursor-not-allowed");
+    } else {
+        approveBtn.disabled = false;
+        approveBtn.textContent = "Approve restaurant";
+        approveBtn.classList.add("bg-emerald-500","hover:bg-emerald-600");
+        approveBtn.classList.remove("bg-gray-300","cursor-not-allowed");
+    }
+
       
       modal.classList.remove('hidden');
     }

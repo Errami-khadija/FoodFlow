@@ -34,7 +34,7 @@ Route::middleware(['auth', 'role:admin'])
             ->name('admin.restaurants');
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('admin.dashboard');
-        Route::patch('/restaurants/{id}/approve', [AdminRestaurantController::class, 'approve'])
+        Route::patch('/restaurants/{id}/approve', [RestaurantController::class, 'approve'])
     ->name('admin.restaurants.approve');
     });
 

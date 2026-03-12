@@ -23,7 +23,7 @@ public function store(Request $request)
         'owner_name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:6|confirmed',
-        'restaurant_name' => 'required|string|max:255',
+        'restaurant_name' => 'required|string|unique:restaurants,name|max:255',
         'cuisine_type' => 'required|string|max:255',
         'rating' => 'nullable|numeric|min:0|max:5',
         'phone' => 'required|string|max:20',
