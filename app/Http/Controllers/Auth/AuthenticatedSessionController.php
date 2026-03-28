@@ -34,11 +34,18 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-    if ($user->role === 'restaurant' && !$user->is_approved) {
+    if ($user->role === 'restaurant' && !$user->restaurant->is_approved === 'true') {
     auth()->logout();
     return redirect()->route('login')
         ->with('error', 'Your restaurant is waiting for admin approval.');
 }
+ //  Restaurant approved
+    if ($user->role === 'restaurant') {
+        return redirect()->route('restaurant.dashboard');
+    }
+
+    // Customer
+    return redirect()->route('home');
 
     return redirect('/');
 }

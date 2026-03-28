@@ -24,7 +24,7 @@ Route::post('/restaurant/register', [RestaurantRegistrationController::class, 's
 Route::middleware(['auth', 'role:restaurant'])
     ->prefix('restaurant')
     ->group(function () {
-        Route::get('/dashboard', [AdminRestaurantController::class, 'restaurants'])
+        Route::get('/dashboard', [RestaurantDashboardController::class, 'index'])
             ->name('restaurant.dashboard');
     });
 
