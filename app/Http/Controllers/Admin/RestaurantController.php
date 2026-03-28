@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
+use App\Mail\RestaurantApproved;
+use Illuminate\Support\Facades\Mail;
 
 class RestaurantController extends Controller
 {
@@ -41,6 +43,9 @@ public function restaurants(Request $request)
     $restaurant->is_approved = true;
     $restaurant->save();
 
-    return back()->with('success', 'Restaurant approved successfully.');
+    // Send email
+    Mail::to($restaurant->owner->email)
+    ->send(new RestaurantApproved($restaurant));
+    return redirect()->back()->with('success', 'Restaurant approved and notified!');
 }
 }
