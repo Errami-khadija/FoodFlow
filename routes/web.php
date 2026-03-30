@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\RestaurantRegistrationController;
+use App\Http\Controllers\Restaurant\CategoryController;
 //Customer
 Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
 
@@ -26,6 +27,16 @@ Route::middleware(['auth', 'role:restaurant'])
     ->group(function () {
         Route::get('/dashboard', [RestaurantDashboardController::class, 'index'])
             ->name('restaurant.dashboard');
+        Route::get('/categories', [CategoryController::class, 'index'])
+            ->name('restaurant.categories');
+        Route::post('/categories', [CategoryController::class, 'store'])
+            ->name('restaurant.categories.store');
+        Route::get('/categories/{id}', [CategoryController::class, 'edit'])
+            ->name('restaurant.categories.edit');
+        Route::put('/categories/{id}', [CategoryController::class, 'update'])
+            ->name('restaurant.categories.update');
+        Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])
+            ->name('restaurant.categories.destroy');
     });
 
 // ADMIN

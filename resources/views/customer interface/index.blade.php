@@ -584,43 +584,6 @@
    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleCartSidebar()"></div>
     <!-- Restaurant Registration Modal -->
    @include('customer interface.restaurant-register')
-   <!-- Contact Info Section -->
-      <div>
-       <h3 class="text-lg font-bold text-dark mb-4 flex items-center"><span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span> Contact Information</h3>
-       <div class="space-y-4">
-        <div><label class="block text-sm font-medium text-gray-700 mb-2" for="owner-name">Owner/Manager Name *</label> <input type="text" id="owner-name" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-        </div>
-        <div class="grid sm:grid-cols-2 gap-4">
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="owner-email">Email Address *</label> <input type="email" id="owner-email" required placeholder="john@restaurant.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-         </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="owner-phone">Phone Number *</label> <input type="tel" id="owner-phone" required placeholder="+1 (555) 000-0000" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-         </div>
-        </div>
-       </div>
-
-
-      </div><!-- Location Section -->
-      <div>
-       <h3 class="text-lg font-bold text-dark mb-4 flex items-center"><span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span> Restaurant Location</h3>
-       <div class="space-y-4">
-        <div><label class="block text-sm font-medium text-gray-700 mb-2" for="rest-address">Street Address *</label> <input type="text" id="rest-address" required placeholder="123 Main Street" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-        </div>
-        <div class="grid sm:grid-cols-3 gap-4">
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="rest-city">City *</label> <input type="text" id="rest-city" required placeholder="New York" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-         </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="rest-state">State/Province *</label> <input type="text" id="rest-state" required placeholder="NY" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-         </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="rest-zip">ZIP Code *</label> <input type="text" id="rest-zip" required placeholder="10001" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none">
-         </div>
-        </div>
-       </div>
-      </div><!-- Terms -->
-      <div class="bg-orange-50 rounded-xl p-4 border border-orange-200"><label class="flex items-start"> <input type="checkbox" id="terms-agree" required class="w-5 h-5 text-primary rounded mt-1"> <span class="ml-3 text-sm text-gray-700">I agree to FoodFlow's <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Partner Agreement</a></span> </label>
-      </div><!-- Submit Buttons -->
-      <div class="flex gap-4"><button type="button" onclick="closeRestaurantRegister()" class="flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-colors"> Cancel </button> <button type="submit" class="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all"> Submit Registration </button>
-      </div>
-     </form>
-    </div>
    </div>
   </div>
  

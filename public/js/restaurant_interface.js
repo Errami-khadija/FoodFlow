@@ -124,6 +124,66 @@
       overlay.classList.add('hidden');
     }
 
+
+document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        let form = this.closest('form');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+
+
+const editModal = document.getElementById('editModal');
+
+document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        let id = this.dataset.id;
+        let name = this.dataset.name;
+        let image = this.dataset.image;
+
+        // Set form action
+        document.getElementById('editForm').action = `/restaurant/categories/${id}`;
+
+        // Fill data
+        document.getElementById('edit_name').value = name;
+
+        // Image preview
+        let preview = document.getElementById('edit_preview');
+        preview.src = image;
+        preview.classList.remove('hidden');
+
+        // Show modal
+        editModal.classList.remove('hidden');
+        editModal.classList.add('flex');
+    });
+});
+
+// Close modal
+document.getElementById('closeEditModal').addEventListener('click', () => {
+    editModal.classList.add('hidden');
+});
+
+document.getElementById('edit_image').addEventListener('change', function(e) {
+    let preview = document.getElementById('edit_preview');
+    preview.src = URL.createObjectURL(e.target.files[0]);
+    preview.classList.remove('hidden');
+});
+
+
     // Render Orders Table
     function renderOrders() {
       const tbody = document.getElementById('orders-table-body');
@@ -420,21 +480,7 @@
       showToast('Menu item added successfully');
     });
 
-    document.getElementById('add-category-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      const newCategory = {
-        id: categories.length + 1,
-        name: formData.get('name'),
-        icon: formData.get('icon') || '📁',
-        itemCount: 0
-      };
-      categories.push(newCategory);
-      renderCategories();
-      closeModal('add-category-modal');
-      this.reset();
-      showToast('Category added successfully');
-    });
+  
 
     // Status Filter
     document.getElementById('status-filter').addEventListener('change', renderOrders);
