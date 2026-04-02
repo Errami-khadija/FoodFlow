@@ -7,9 +7,11 @@ use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
+use App\Http\Controllers\Restaurant\CategoryController;
+use App\Http\Controllers\Restaurant\MenuController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\RestaurantRegistrationController;
-use App\Http\Controllers\Restaurant\CategoryController;
+
 //Customer
 Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
 
@@ -37,6 +39,16 @@ Route::middleware(['auth', 'role:restaurant'])
             ->name('restaurant.categories.update');
         Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])
             ->name('restaurant.categories.destroy');
+        Route::get('/menus', [MenuController::class, 'index'])
+            ->name('restaurant.menus');
+        Route::post('/menus', [MenuController::class, 'store'])
+            ->name('restaurant.menus.store');
+            Route::get('/menus/{id}', [MenuController::class, 'edit'])
+            ->name('restaurant.menus.edit');
+        Route::put('/menus/{id}', [MenuController::class, 'update'])
+            ->name('restaurant.menus.update');
+        Route::delete('/menus/{id}', [MenuController::class, 'destroy'])
+            ->name('restaurant.menus.destroy');
     });
 
 // ADMIN

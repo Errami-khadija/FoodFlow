@@ -6,8 +6,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
      <div class="flex justify-between items-center h-16">
       <div class="flex items-center cursor-pointer" onclick="navigateTo('landing')">
-       <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center"><span class="text-white text-xl">🍽️</span>
-       </div><span class="ml-3 text-xl font-bold text-dark">FoodFlow</span>
+       <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+       <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-6 h-6 text-white"><path fill="currentColor" d="M48 384c-8.8 0-16 7.2-16 16 0 44.2 35.8 80 80 80l288 0c44.2 0 80-35.8 80-80 0-8.8-7.2-16-16-16L48 384zM32 202c0 12.2 9.9 22 22 22L458 224c12.2 0 22-9.9 22-22 0-17.2-2.6-34.4-10.8-49.5-22.2-40.8-82.3-120.5-213.2-120.5S65 111.6 42.8 152.5C34.6 167.6 32 184.8 32 202zM0 304c0 17.7 14.3 32 32 32l448 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 272c-17.7 0-32 14.3-32 32zM256 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zM120 128a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm248-24a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+       </div>
+       <span class="ml-3 text-xl font-bold text-dark">FoodFlow</span>
       </div>
       <div class="hidden md:flex items-center space-x-8"><a href="#how-it-works" class="text-gray-600 hover:text-primary transition-colors font-medium">How It Works</a> <a href="#restaurants" class="text-gray-600 hover:text-primary transition-colors font-medium">Restaurants</a> <a href="#testimonials" class="text-gray-600 hover:text-primary transition-colors font-medium">Reviews</a> <button onclick="navigateTo('landing')" class="px-5 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-semibold hover:shadow-lg hover:shadow-orange-200 transition-all duration-300"> Get Started </button>
       </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100" onclick="toggleMobileMenu()">
@@ -29,7 +31,7 @@
      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
        <div class="text-center lg:text-left">
-        <div class="inline-flex items-center px-4 py-2 bg-orange-100 rounded-full mb-6 animate-fade-in"><span class="text-primary font-semibold text-sm">🚀 #1 Food Delivery Platform</span>
+        <div class="inline-flex items-center px-4 py-2 bg-orange-100 rounded-full mb-6 animate-fade-in"><span class="text-primary font-semibold text-sm">#1 Food Delivery Platform</span>
         </div>
         <h1 id="hero-headline" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark leading-tight mb-6 animate-fade-in stagger-1">Order Your <span class="gradient-text">Favorite Meals</span> Online</h1>
         <p id="hero-subtext" class="text-lg sm:text-xl text-gray-600 mb-8 animate-fade-in stagger-2 max-w-lg mx-auto lg:mx-0">Fast delivery. Secure payments. Real-time tracking. Experience the future of food ordering.</p>
@@ -61,35 +63,59 @@
        </div>
        <div class="relative animate-fade-in stagger-2">
         <div class="relative bg-gradient-to-br from-orange-100 to-red-100 rounded-3xl p-8 lg:p-12">
-         <div class="grid grid-cols-2 gap-4">
-          <div class="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow" style="animation-delay: 0s;">
-           <div class="text-4xl mb-2">
-            🍕
-           </div>
-           <h3 class="font-bold text-dark">Pizza</h3>
-           <p class="text-sm text-gray-500">20+ options</p>
-          </div>
-          <div class="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow" style="animation-delay: 0.5s;">
-           <div class="text-4xl mb-2">
-            🍔
-           </div>
-           <h3 class="font-bold text-dark">Burgers</h3>
-           <p class="text-sm text-gray-500">15+ options</p>
-          </div>
-          <div class="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow" style="animation-delay: 1s;">
-           <div class="text-4xl mb-2">
-            🍣
-           </div>
-           <h3 class="font-bold text-dark">Sushi</h3>
-           <p class="text-sm text-gray-500">30+ options</p>
-          </div>
-          <div class="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow" style="animation-delay: 1.5s;">
-           <div class="text-4xl mb-2">
-            🥗
-           </div>
-           <h3 class="font-bold text-dark">Salads</h3>
-           <p class="text-sm text-gray-500">12+ options</p>
-          </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow overflow-hidden" style="animation-delay: 0s; height: 200px; width: 200px;">
+    
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-center bg-cover rounded-2xl opacity-60" 
+         style="background-image: url('{{ asset('images/pizza.png') }}');">
+    </div>
+
+    <!-- Content at bottom-left -->
+    <div class="relative z-10 p-4 flex flex-col justify-end h-full text-left text-black">
+        <h3 class="font-bold text-lg mb-1">Pizza</h3>
+        <p class="text-sm">20+ options</p>
+    </div>
+</div>
+          <div class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow overflow-hidden" style="animation-delay: 0s; height: 200px; width: 200px;">
+    
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-center bg-cover rounded-2xl opacity-60" 
+         style="background-image: url('{{ asset('images/burgers.png') }}');">
+    </div>
+
+    <!-- Content at bottom-left -->
+    <div class="relative z-10 p-4 flex flex-col justify-end h-full text-left text-black">
+        <h3 class="font-bold text-lg mb-1">Burgers</h3>
+        <p class="text-sm">25+ options</p>
+    </div>
+</div>
+          <div class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow overflow-hidden" style="animation-delay: 0s; height: 200px; width: 200px;">
+    
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-center bg-cover rounded-2xl opacity-60" 
+         style="background-image: url('{{ asset('images/sushi.png') }}');">
+    </div>
+
+    <!-- Content at bottom-left -->
+    <div class="relative z-10 p-4 flex flex-col justify-end h-full text-left text-black">
+        <h3 class="font-bold text-lg mb-1">Sushi</h3>
+        <p class="text-sm">30+ options</p>
+    </div>
+</div>
+         <div class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow animate-bounce-slow overflow-hidden" style="animation-delay: 0s; height: 200px; width: 200px;">
+    
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-center bg-cover rounded-2xl opacity-60" 
+         style="background-image: url('{{ asset('images/salad.jpg') }}');">
+    </div>
+
+    <!-- Content at bottom-left -->
+    <div class="relative z-10 p-4 flex flex-col justify-end h-full text-left text-black">
+        <h3 class="font-bold text-lg mb-1">Salads</h3>
+        <p class="text-sm">15+ options</p>
+    </div>
+</div>
          </div>
          <div class="absolute -bottom-4 -right-4 bg-white rounded-2xl p-4 shadow-xl animate-pulse-slow">
           <div class="flex items-center space-x-2">

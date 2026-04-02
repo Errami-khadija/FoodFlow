@@ -10,9 +10,13 @@
       <div id="categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       </div>
 
+     
+
 
       <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @foreach($categories as $cat)
+    @forelse ($categories as $cat)
+        
+   
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
             
             <div class="flex items-center gap-4 mb-4">
@@ -52,7 +56,32 @@
             </div>
 
         </div>
-    @endforeach
+  @empty
+
+    <!-- Empty State -->
+    <div class="col-span-full text-center py-12">
+        
+        <div class="flex flex-col items-center gap-3">
+            
+            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
+                <span class="text-3xl">📂</span>
+            </div>
+
+            <h3 class="text-lg font-semibold text-gray-700">
+                No categories yet
+            </h3>
+
+            <p class="text-sm text-gray-400">
+                Start by creating your first category
+            </p>
+
+
+
+        </div>
+
+    </div>
+
+@endforelse
 </div>
 
 

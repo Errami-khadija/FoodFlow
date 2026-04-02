@@ -329,40 +329,8 @@ document.getElementById('edit_image').addEventListener('change', function(e) {
       }
     }
 
-    // Render Categories
-    function renderCategories() {
-      const grid = document.getElementById('categories-grid');
-      grid.innerHTML = categories.map(cat => `
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <span class="text-2xl">${cat.icon}</span>
-            </div>
-            <div>
-              <h4 class="font-semibold text-gray-800">${cat.name}</h4>
-              <p class="text-sm text-gray-400">${cat.itemCount} items</p>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <button class="flex-1 py-2 text-sm font-medium text-orange-500 hover:bg-orange-50 rounded-lg transition-colors">
-              Edit
-            </button>
-            <button onclick="deleteCategory(${cat.id})" class="flex-1 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-              Delete
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
 
-    function deleteCategory(id) {
-      const index = categories.findIndex(c => c.id === id);
-      if (index > -1) {
-        categories.splice(index, 1);
-        renderCategories();
-        showToast('Category deleted');
-      }
-    }
+   
 
     // Render Reviews
     function renderReviews() {

@@ -11,8 +11,8 @@ class Category extends Model
         'image', 
     ];
 
-    //  public function items()
-    // {
-    //     return $this->hasMany(Item::class);
-    // }
+  public function menus()
+{
+    return $this->hasMany(Menu::class);
+}
 }
