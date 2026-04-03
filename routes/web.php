@@ -43,8 +43,6 @@ Route::middleware(['auth', 'role:restaurant'])
             ->name('restaurant.menus');
         Route::post('/menus', [MenuController::class, 'store'])
             ->name('restaurant.menus.store');
-            Route::get('/menus/{id}', [MenuController::class, 'edit'])
-            ->name('restaurant.menus.edit');
         Route::put('/menus/{id}', [MenuController::class, 'update'])
             ->name('restaurant.menus.update');
         Route::delete('/menus/{id}', [MenuController::class, 'destroy'])

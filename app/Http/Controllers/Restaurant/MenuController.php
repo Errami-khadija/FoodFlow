@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -75,16 +76,48 @@ public function store(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+
+public function update(Request $request, $id)
+{
+    $menu = Menu::findOrFail($id);
+
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'description' => 'nullable|string',
+        'category_id' => 'nullable|exists:categories,id',
+        'image' => 'nullable|image|max:2048',
+    ]);
+
+    // Handle image update
+    if ($request->hasFile('image')) {
+
+        // delete old image
+        if ($menu->image && Storage::disk('public')->exists($menu->image)) {
+            Storage::disk('public')->delete($menu->image);
+        }
+
+        $data['image'] = $request->file('image')->store('menus', 'public');
     }
+
+    $menu->update($data);
+
+    return back()->with('success', 'Menu updated successfully');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+  public function destroy($id)
+{
+    $menu = Menu::findOrFail($id);
+
+    if ($menu->image && Storage::disk('public')->exists($menu->image)) {
+        Storage::disk('public')->delete($menu->image);
     }
+
+    $menu->delete();
+
+    return redirect()->back()->with('success', 'Menu item deleted');
+}
 }

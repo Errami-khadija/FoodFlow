@@ -282,52 +282,80 @@ document.getElementById('edit_image').addEventListener('change', function(e) {
       }
     }
 
-    // Render Menu Items
-    function renderMenuItems() {
-      const grid = document.getElementById('menu-grid');
-      grid.innerHTML = menuItems.map(item => `
-        <div class="menu-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="h-32 bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center">
-            <span class="text-5xl">${item.emoji}</span>
-          </div>
-          <div class="p-4">
-            <div class="flex items-start justify-between mb-2">
-              <h4 class="font-semibold text-gray-800">${item.name}</h4>
-              <span class="text-orange-500 font-bold">$${item.price}</span>
-            </div>
-            <p class="text-sm text-gray-400 mb-3">${item.description}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">${item.category}</span>
-              <div class="flex gap-1">
-                <button onclick="editMenuItem(${item.id})" class="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                  </svg>
-                </button>
-                <button onclick="deleteMenuItem(${item.id})" class="p-2 hover:bg-red-50 rounded-lg text-red-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('');
+function confirmDelete(button) {
+    const form = button.closest('form');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This menu item will be permanently deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
+
+
+function openEditModal(button) {
+
+    const modal = document.getElementById('edit-item-modal');
+    const form = document.getElementById('edit-form');
+
+    const id = button.dataset.id;
+
+    // Fill inputs
+    document.getElementById('edit-name').value = button.dataset.name;
+    document.getElementById('edit-price').value = button.dataset.price;
+    document.getElementById('edit-description').value = button.dataset.description;
+    document.getElementById('edit-category').value = button.dataset.category;
+    
+     // Image preview
+    const preview = document.getElementById('edit-image-preview');
+    const placeholder = document.getElementById('edit-image-placeholder');
+
+    if (button.dataset.image) {
+        preview.src = button.dataset.image;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+    } else {
+        preview.classList.add('hidden');
+        placeholder.classList.remove('hidden');
     }
 
-    function editMenuItem(id) {
-      showToast('Edit functionality - Item #' + id);
-    }
+    // Set form action dynamically
+    form.action = `/restaurant/menus/${id}`;
 
-    function deleteMenuItem(id) {
-      const index = menuItems.findIndex(i => i.id === id);
-      if (index > -1) {
-        menuItems.splice(index, 1);
-        renderMenuItems();
-        showToast('Item deleted successfully');
-      }
+    // Show modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+  const input = document.getElementById('edit-image-input');
+
+input.value = ""; // reset previous file
+
+input.onchange = function(e) {
+
+    const file = e.target.files[0];
+    const preview = document.getElementById('edit-image-preview');
+    const placeholder = document.getElementById('edit-image-placeholder');
+
+    if (file) {
+        preview.src = URL.createObjectURL(file); 
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
     }
+};
+
+}
+
+
+
+
 
 
    

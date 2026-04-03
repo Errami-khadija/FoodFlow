@@ -47,9 +47,15 @@
                     
                     {{-- Edit --}}
                     <button 
-                        onclick="openEditModal({{ $menu->id }})"
-                        class="p-2 hover:bg-gray-100 rounded-lg text-gray-500"
-                    >
+    onclick="openEditModal(this)"
+    data-id="{{ $menu->id }}"
+    data-name="{{ $menu->name }}"
+    data-price="{{ $menu->price }}"
+    data-description="{{ $menu->description }}"
+    data-category="{{ $menu->category_id }}"
+     data-image="{{ $menu->image ? asset('storage/' . $menu->image) : '' }}"
+    class="p-2 hover:bg-gray-100 rounded-lg text-gray-500"
+>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -110,4 +116,12 @@
      </div>
     </div>
 
+  @if(session('success'))
+    <div class="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
 @include('restaurant_interface.sections.menu.create')
+@include('restaurant_interface.sections.menu.edit')
+
