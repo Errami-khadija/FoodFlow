@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
   public function index()
 {
-    $categories = Category::get(); 
+   $categories = Category::withCount('menus')->get();
 
    return view('restaurant_interface.index', [
         'section' => 'restaurant_interface.sections.categories.index', 

@@ -28,7 +28,7 @@
                 <div>
                     <h4 class="font-semibold text-gray-800">{{ $cat->name }}</h4>
                     <p class="text-sm text-gray-400">
-                        {{ $cat->items_count ?? 0 }} items
+                        {{ $cat->menus_count ?? 0 }} items
                     </p>
                 </div>
             </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
 use App\Http\Controllers\Restaurant\CategoryController;
 use App\Http\Controllers\Restaurant\MenuController;
+use App\Http\Controllers\Restaurant\OrdersController as RestaurantOrdersController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\RestaurantRegistrationController;
 
@@ -47,6 +48,15 @@ Route::middleware(['auth', 'role:restaurant'])
             ->name('restaurant.menus.update');
         Route::delete('/menus/{id}', [MenuController::class, 'destroy'])
             ->name('restaurant.menus.destroy');
+
+            Route::get('/orders', [RestaurantOrdersController::class, 'index'])
+            ->name('restaurant.orders');
+                Route::put('/orders/{id}', [RestaurantOrdersController::class, 'update'])
+            ->name('restaurant.orders.update');
+
+                Route::get('/orders/{id}', [RestaurantOrdersController::class, 'show'])
+            ->name('restaurant.orders.show');
+
     });
 
 // ADMIN

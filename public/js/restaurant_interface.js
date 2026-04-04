@@ -184,52 +184,6 @@ document.getElementById('edit_image').addEventListener('change', function(e) {
 });
 
 
-    // Render Orders Table
-    function renderOrders() {
-      const tbody = document.getElementById('orders-table-body');
-      const statusFilter = document.getElementById('status-filter').value;
-      
-      const filteredOrders = statusFilter === 'all' 
-        ? orders 
-        : orders.filter(o => o.status === statusFilter);
-      
-      tbody.innerHTML = filteredOrders.map(order => `
-        <tr class="hover:bg-gray-50">
-          <td class="px-6 py-4 text-sm font-medium text-gray-800">#${order.id}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">${order.customer}</td>
-          <td class="px-6 py-4 text-sm font-medium text-gray-800">$${order.total.toFixed(2)}</td>
-          <td class="px-6 py-4">
-            <span class="px-3 py-1 text-xs font-medium rounded-full ${getStatusClass(order.status)}">
-              ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-            </span>
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-2">
-              <button onclick="viewOrder('${order.id}')" class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-gray-700">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                </svg>
-              </button>
-              <button onclick="updateOrderStatus('${order.id}')" class="p-2 hover:bg-orange-50 rounded-lg text-orange-500 hover:text-orange-600">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function getStatusClass(status) {
-      switch(status) {
-        case 'pending': return 'bg-yellow-100 text-yellow-700';
-        case 'preparing': return 'bg-blue-100 text-blue-700';
-        case 'delivered': return 'bg-green-100 text-green-700';
-        default: return 'bg-gray-100 text-gray-700';
-      }
-    }
 
     function viewOrder(orderId) {
       const order = orders.find(o => o.id === orderId);

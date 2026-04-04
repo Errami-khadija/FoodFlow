@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
+use App\Models\Order;
 
 class Menu extends Model
 { 
@@ -23,4 +25,11 @@ protected $casts = [
 {
     return $this->belongsTo(Category::class);
 }
+
+public function orders()
+{
+    return $this->belongsToMany(Order::class, 'order_items')
+                ->withPivot('quantity', 'price');
+}
+
 }
