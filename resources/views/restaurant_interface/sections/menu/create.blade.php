@@ -23,7 +23,7 @@
             class="p-6 space-y-4"
         >
             @csrf
-
+           <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}">
             <!-- Name -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Item Name</label>

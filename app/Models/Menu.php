@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\Restaurant;
 
 class Menu extends Model
 { 
@@ -31,5 +32,8 @@ public function orders()
     return $this->belongsToMany(Order::class, 'order_items')
                 ->withPivot('quantity', 'price');
 }
+
+ public function restaurant()
+ {   return $this->belongsTo(Restaurant::class);}
 
 }

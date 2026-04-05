@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Restaurant;
 
 class MenuController extends Controller
 {
@@ -17,7 +18,7 @@ class MenuController extends Controller
     {   
          $menus = Menu::with('category')->latest()->get();
          $categories = Category::all();
-
+         
          return view('restaurant_interface.index', [
         'section' => 'restaurant_interface.sections.menu.index',
         'menus' => $menus,
@@ -40,6 +41,7 @@ class MenuController extends Controller
 public function store(Request $request)
 {
     $data = $request->validate([
+          'restaurant_id' => 'required|exists:restaurants,id',
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
         'price' => 'required|numeric',

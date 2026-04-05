@@ -29,8 +29,10 @@
  </head>
 <body class="h-full bg-white text-gray-800 overflow-auto">
 
-
-
+<div id="app" class="w-full min-h-full">
+    <!-- Navigation -->
+     @include('customer interface.nav')
+     
     <!-- Main content -->
     <main class="container mx-auto py-8">
         @yield('content')

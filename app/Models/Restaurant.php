@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Menu;
+use App\Models\Category;
 
 class Restaurant extends Model
 {   use HasFactory;
@@ -22,5 +26,15 @@ class Restaurant extends Model
 {
     return $this->hasMany(Order::class);
 }
-    
+
+public function menus()
+{
+    return $this->hasMany(Menu::class);
+}
+
+public function categories()
+{
+    return $this->hasMany(Category::class);
+
+}
 }
