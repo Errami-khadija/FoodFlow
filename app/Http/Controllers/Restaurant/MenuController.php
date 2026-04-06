@@ -41,7 +41,6 @@ class MenuController extends Controller
 public function store(Request $request)
 {
     $data = $request->validate([
-          'restaurant_id' => 'required|exists:restaurants,id',
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
         'price' => 'required|numeric',
@@ -53,6 +52,11 @@ public function store(Request $request)
     if ($request->hasFile('image')) {
         $data['image'] = $request->file('image')->store('menus', 'public');
     }
+
+      // Get restaurant from logged-in user
+    $restaurant = auth()->user()->restaurant;
+
+    $data['restaurant_id'] = $restaurant->id;
 
     Menu::create($data);
 

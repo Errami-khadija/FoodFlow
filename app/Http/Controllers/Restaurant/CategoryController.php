@@ -46,7 +46,13 @@ class CategoryController extends Controller
         $imagePath = $request->file('image')->store('categories', 'public');
     }
 
+     // Get restaurant from logged-in user
+    $restaurant = auth()->user()->restaurant;
+
+   
+
     Category::create([
+        'restaurant_id' => $restaurant->id,
         'name' => $request->name,
         'image' => $imagePath,
     ]);

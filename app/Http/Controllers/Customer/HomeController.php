@@ -23,7 +23,7 @@ class HomeController extends Controller
     public function show($id)
     {  
         
-        $restaurant = Restaurant::with('menus')->findOrFail($id);
+       $restaurant = Restaurant::with('categories.menus')->findOrFail($id);
         return view('customer interface.restaurant-page', compact('restaurant'));
     }
 }

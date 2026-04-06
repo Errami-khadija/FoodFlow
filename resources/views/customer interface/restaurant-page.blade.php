@@ -5,7 +5,7 @@
     <div id="restaurant-content">
 
 <div class="relative h-48 sm:h-64 overflow-hidden rounded-b-2xl bg-gradient-to-br {{ $restaurant->gradient }}">
-    <!-- Emoji overlay -->
+    <!-- Image overlay -->
     <div class="absolute inset-0 flex items-center justify-center text-8xl">
        <img src="{{ $restaurant->image ? asset('storage/' . $restaurant->image) : asset('images/default-restaurant.jpg') }}"
      alt="{{ $restaurant->name }}"
@@ -49,38 +49,47 @@
 
     <!-- Categories Tabs -->
     <div class="flex overflow-x-auto hide-scrollbar gap-2 mb-6 pb-2">
-        @foreach($restaurant->categories as $i => $cat)
-            <button onclick="scrollToCategory('{{ $cat }}')" class="px-6 py-3 {{ $i === 0 ? 'bg-gradient-to-r from-primary to-secondary text-white' : 'bg-white text-gray-700 hover:bg-gray-50' }} rounded-xl font-semibold whitespace-nowrap shadow-md transition-all">
-                {{ $cat }}
-            </button>
-        @endforeach
+       @foreach($restaurant->categories as $i => $cat)
+    <button onclick="scrollToCategory('{{ $cat->id }}')"
+        class="px-6 py-3 {{ $i === 0 ? 'bg-gradient-to-r from-primary to-secondary text-white' : 'bg-white text-gray-700 hover:bg-gray-50' }} rounded-xl font-semibold whitespace-nowrap shadow-md transition-all">
+        {{ $cat->name }}
+    </button>
+@endforeach
     </div>
 
     <!-- Menu Items -->
-    @foreach($restaurant->categories as $cat)
-        <div id="category-{{ $cat }}" class="mb-8">
-            <h2 class="text-xl font-bold text-dark mb-4">{{ $cat }}</h2>
+   @foreach($restaurant->categories as $cat)
+    <div id="category-{{ $cat->id }}" class="mb-8">
+        <h2 class="text-xl font-bold text-dark mb-4">{{ $cat->name }}</h2>
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                @foreach($restaurant->menu[$cat] ?? [] as $item)
-                    <div class="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all group">
-                        <div class="flex items-start">
-                            <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
-                                {{ $item['emoji'] }}
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h3 class="font-bold text-dark">{{ $item['name'] }}</h3>
-                                <p class="text-sm text-gray-500 mt-1">{{ $item['desc'] }}</p>
-                                <div class="flex items-center justify-between mt-3">
-                                    <span class="font-bold text-primary">${{ number_format($item['price'], 2) }}</span>
-                                    <button onclick="addToCart({{ $restaurant->id }}, {{ $item['id'] }})" class="w-8 h-8 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">
-                                        <span class="text-xl leading-none">+</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+    @foreach($cat->menus as $item)
+        <div class="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all group">
+            <div class="flex items-start">
+
+                <!-- Image instead of emoji -->
+                <div class="w-20 h-20 rounded-xl overflow-hidden">
+                    <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default-food.jpg') }}"
+                         class="w-full h-full object-cover">
+                </div>
+
+                <div class="ml-4 flex-1">
+                    <h3 class="font-bold text-dark">{{ $item->name }}</h3>
+                    <p class="text-sm text-gray-500 mt-1">{{ $item->description }}</p>
+
+                    <div class="flex items-center justify-between mt-3">
+                        <span class="font-bold text-primary">${{ number_format($item->price, 2) }}</span>
+
+                        <button onclick="addToCart({{ $restaurant->id }}, {{ $item->id }})"
+                            class="w-8 h-8 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                            +
+                        </button>
                     </div>
-                @endforeach
+                </div>
+
             </div>
+        </div>
+    @endforeach
+</div>
         </div>
     @endforeach
 </div>
