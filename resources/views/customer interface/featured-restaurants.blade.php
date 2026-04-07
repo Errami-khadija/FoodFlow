@@ -8,74 +8,60 @@
         </svg></button>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-       <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" onclick="navigateTo('restaurant', 1)">
-        <div class="relative h-40 bg-gradient-to-br from-red-400 to-red-600 overflow-hidden">
-         <div class="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
-          🍕
-         </div>
-         <div class="absolute top-3 right-3 bg-white px-2 py-1 rounded-full text-xs font-semibold text-green-600">
-          Open
-         </div>
+    @foreach($restaurants as $restaurant)
+        <div 
+            class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+            onclick="navigateTo('restaurant', {{ $restaurant->id }})"
+        >
+            <div class="relative h-40 bg-gradient-to-br from-orange-400 to-orange-600 overflow-hidden">
+
+                <!-- Image -->
+                @if($restaurant->image)
+                    <img src="{{ asset('storage/' . $restaurant->image) }}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                @else
+                    <div class="absolute inset-0 flex items-center justify-center text-6xl">
+                        🍽️
+                    </div>
+                @endif
+
+                <!-- Status -->
+                <div class="absolute top-3 right-3 bg-white px-2 py-1 rounded-full text-xs font-semibold {{ $restaurant->open_orClose ? 'text-green-600' : 'text-red-600' }}">
+                         {{ $restaurant->open_orClose ? 'Open' : 'Closed' }}
+                </div>
+            </div>
+
+            <div class="p-5">
+                <h3 class="font-bold text-lg text-dark mb-1">
+                    {{ $restaurant->name }}
+                </h3>
+
+                <!-- Rating (static or from DB if you have it) -->
+                <div class="flex items-center mb-2">
+                    <span class="text-yellow-500">⭐</span>
+                    <span class="font-semibold text-dark ml-1">
+                        {{ $restaurant->rating ?? '4.5' }}
+                    </span>
+                </div>
+
+                <!-- Extra info -->
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">
+                        🕐 {{ $restaurant->delivery_time ?? '20-30 min' }}
+                    </span>
+                    <span class="text-sm text-gray-500">
+                        💰 ${{ number_format($restaurant->delivery_fee ?? 0, 2) }} delivery
+                    </span>
+                </div>
+                <div class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all ">
+                <a href="{{ route('restaurant.show', $restaurant->id) }}" class="w-full h-full flex justify-center items-center">
+                    View Menu
+                </a>
+</div>
+            </div>
         </div>
-        <div class="p-5">
-         <h3 class="font-bold text-lg text-dark mb-1">Pizza Paradise</h3>
-         <div class="flex items-center mb-2"><span class="text-yellow-500">⭐</span> <span class="font-semibold text-dark ml-1">4.8</span> <span class="text-gray-400 text-sm ml-1">(324)</span>
-         </div>
-         <div class="flex items-center justify-between"><span class="text-sm text-gray-500">🕐 20-30 min</span> <span class="text-sm text-gray-500">💰 $2.99 delivery</span>
-         </div><button class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all"> View Menu </button>
-        </div>
-       </div>
-       <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" onclick="navigateTo('restaurant', 2)">
-        <div class="relative h-40 bg-gradient-to-br from-amber-400 to-orange-500 overflow-hidden">
-         <div class="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
-          🍔
-         </div>
-         <div class="absolute top-3 right-3 bg-white px-2 py-1 rounded-full text-xs font-semibold text-green-600">
-          Open
-         </div>
-        </div>
-        <div class="p-5">
-         <h3 class="font-bold text-lg text-dark mb-1">Burger Barn</h3>
-         <div class="flex items-center mb-2"><span class="text-yellow-500">⭐</span> <span class="font-semibold text-dark ml-1">4.6</span> <span class="text-gray-400 text-sm ml-1">(512)</span>
-         </div>
-         <div class="flex items-center justify-between"><span class="text-sm text-gray-500">🕐 15-25 min</span> <span class="text-sm text-gray-500">💰 $1.99 delivery</span>
-         </div><button class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all"> View Menu </button>
-        </div>
-       </div>
-       <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" onclick="navigateTo('restaurant', 3)">
-        <div class="relative h-40 bg-gradient-to-br from-pink-400 to-rose-500 overflow-hidden">
-         <div class="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
-          🍣
-         </div>
-         <div class="absolute top-3 right-3 bg-white px-2 py-1 rounded-full text-xs font-semibold text-green-600">
-          Open
-         </div>
-        </div>
-        <div class="p-5">
-         <h3 class="font-bold text-lg text-dark mb-1">Sushi Supreme</h3>
-         <div class="flex items-center mb-2"><span class="text-yellow-500">⭐</span> <span class="font-semibold text-dark ml-1">4.9</span> <span class="text-gray-400 text-sm ml-1">(289)</span>
-         </div>
-         <div class="flex items-center justify-between"><span class="text-sm text-gray-500">🕐 25-35 min</span> <span class="text-sm text-gray-500">💰 $3.99 delivery</span>
-         </div><button class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all"> View Menu </button>
-        </div>
-       </div>
-       <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" onclick="navigateTo('restaurant', 4)">
-        <div class="relative h-40 bg-gradient-to-br from-green-400 to-emerald-500 overflow-hidden">
-         <div class="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
-          🥗
-         </div>
-         <div class="absolute top-3 right-3 bg-white px-2 py-1 rounded-full text-xs font-semibold text-green-600">
-          Open
-         </div>
-        </div>
-        <div class="p-5">
-         <h3 class="font-bold text-lg text-dark mb-1">Green Garden</h3>
-         <div class="flex items-center mb-2"><span class="text-yellow-500">⭐</span> <span class="font-semibold text-dark ml-1">4.7</span> <span class="text-gray-400 text-sm ml-1">(198)</span>
-         </div>
-         <div class="flex items-center justify-between"><span class="text-sm text-gray-500">🕐 15-20 min</span> <span class="text-sm text-gray-500">💰 $2.49 delivery</span>
-         </div><button class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all"> View Menu </button>
-        </div>
-       </div>
+    @endforeach
+</div>
       </div>
      </div>
     </section>

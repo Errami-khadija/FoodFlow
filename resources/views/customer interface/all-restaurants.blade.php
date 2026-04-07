@@ -48,9 +48,9 @@
                     <span class="text-sm text-gray-500">🕐 {{ $r->deliveryTime }} min</span>
                     <span class="text-sm text-gray-500">💰 ${{ number_format($r->deliveryFee, 2) }} delivery</span>
                 </div>
-                <button class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                <a href="{{ route('restaurant.show', $r->id) }}" class="w-full mt-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-lg transition-all">
                     View Menu
-                </button>
+                </a>
             </div>
 
         </div>

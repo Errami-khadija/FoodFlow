@@ -10,8 +10,9 @@ class HomeController extends Controller
 {
     public function index()
     {  
+        $restaurants = Restaurant::inRandomOrder()->take(4)->get(); 
 
-        return view('customer interface.index');
+        return view('customer interface.index', compact('restaurants'));
     }
 
     public function restaurants()
