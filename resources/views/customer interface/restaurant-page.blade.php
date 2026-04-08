@@ -79,7 +79,7 @@
                     <div class="flex items-center justify-between mt-3">
                         <span class="font-bold text-primary">${{ number_format($item->price, 2) }}</span>
 
-                        <button onclick="addToCart({{ $restaurant->id }}, {{ $item->id }})"
+                        <button onclick="addToCart({{ $item->id }}, {{ $restaurant->id }})"
                             class="w-8 h-8 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">
                             +
                         </button>
@@ -96,4 +96,7 @@
 
     </div>
    </div>
+
+    <!-- Cart Sidebar -->
+    @include('customer interface.cart')
    @endsection

@@ -276,106 +276,82 @@
       document.getElementById(`category-${cat}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Cart functions
-    function addToCart(restaurantId, itemId) {
-      const restaurant = restaurants.find(r => r.id === restaurantId);
-      if (!restaurant) return;
-      
-      let item;
-      for (const cat of restaurant.categories) {
-        const found = restaurant.menu[cat].find(i => i.id === itemId);
-        if (found) {
-          item = found;
-          break;
-        }
-      }
-      if (!item) return;
-      
-      const existing = cart.find(c => c.itemId === itemId && c.restaurantId === restaurantId);
-      if (existing) {
-        existing.quantity++;
-      } else {
-        cart.push({
-          restaurantId,
-          itemId,
-          name: item.name,
-          price: item.price,
-          emoji: item.emoji,
-          quantity: 1
-        });
-      }
-      
-      updateCartUI();
-      showAddedNotification(item.name);
-    }
 
-    function removeFromCart(itemId, restaurantId) {
-      const index = cart.findIndex(c => c.itemId === itemId && c.restaurantId === restaurantId);
-      if (index > -1) {
-        if (cart[index].quantity > 1) {
-          cart[index].quantity--;
-        } else {
-          cart.splice(index, 1);
-        }
-        updateCartUI();
-      }
-    }
+async function loadCart() {
+    const res = await fetch('/cart');
+    const data = await res.json();
 
-    function updateCartUI() {
-      const cartItems = document.getElementById('cart-items');
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      const total = subtotal + 2.99;
-      
-      // Update cart count badges
-      const floatingCount = document.getElementById('floating-cart-count');
-      const headerCount = document.getElementById('header-cart-count');
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      
-      if (floatingCount) floatingCount.textContent = totalItems;
-      if (headerCount) headerCount.textContent = totalItems;
-      
-      // Update cart items
-      if (cart.length === 0) {
-        cartItems.innerHTML = `
-          <div class="text-center py-12">
-            <div class="text-6xl mb-4">🛒</div>
-            <p class="text-gray-500">Your cart is empty</p>
-            <p class="text-sm text-gray-400 mt-1">Add some delicious items!</p>
-          </div>
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+
+    data.items.forEach(item => {
+        container.innerHTML += `
+            <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow">
+                <div>
+                    <h4 class="font-bold">${item.menu.name}</h4>
+                    <p class="text-sm text-gray-500">$${item.menu.price} x ${item.quantity}</p>
+                </div>
+                <button onclick="removeItem(${item.id})" class="text-red-500">✕</button>
+            </div>
         `;
-      } else {
-        cartItems.innerHTML = cart.map(item => `
-          <div class="flex items-center bg-gray-50 rounded-xl p-3">
-            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-2xl shadow-sm">${item.emoji}</div>
-            <div class="ml-3 flex-1">
-              <h4 class="font-semibold text-dark text-sm">${item.name}</h4>
-              <p class="text-primary font-medium">$${(item.price * item.quantity).toFixed(2)}</p>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button onclick="removeFromCart(${item.itemId}, ${item.restaurantId})" class="w-7 h-7 bg-white rounded-full flex items-center justify-center shadow hover:bg-gray-100 transition-colors">
-                <span class="text-gray-600">−</span>
-              </button>
-              <span class="font-semibold w-6 text-center">${item.quantity}</span>
-              <button onclick="addToCart(${item.restaurantId}, ${item.itemId})" class="w-7 h-7 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center shadow hover:scale-110 transition-transform">
-                <span>+</span>
-              </button>
-            </div>
-          </div>
-        `).join('');
-      }
-      
-      // Update totals
-      document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
-      document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
-      
-      // Update checkout button
-      const checkoutBtn = document.getElementById('checkout-btn');
-      if (cart.length > 0) {
-        checkoutBtn.disabled = false;
-      } else {
-        checkoutBtn.disabled = true;
-      }
+    });
+
+    document.getElementById('cart-subtotal').innerText = `$${data.subtotal}`;
+    document.getElementById('cart-total').innerText = `$${data.total}`;
+    document.getElementById('floating-cart-count').innerText = data.count;
+
+    document.getElementById('checkout-btn').disabled = data.count === 0;
+}
+
+//  Add to cart
+async function addToCart(menuId, restaurantId) {
+
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+ const res = await fetch('/cart', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': token
+    },
+        body: JSON.stringify({
+            menu_id: menuId,
+            restaurant_id: restaurantId
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.error === 'different_restaurant') {
+        if (confirm("Cart has another restaurant. Clear it?")) {
+            await fetch('/cart', {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            addToCart(menuId, restaurantId);
+        }
+        return;
     }
+
+    loadCart();
+}
+
+//  Remove item
+async function removeItem(id) {
+    await fetch(`/cart/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    });
+
+    loadCart();
+}
+
+// Load cart on page load
+document.addEventListener('DOMContentLoaded', loadCart);
 
     function showAddedNotification(name) {
       const notification = document.createElement('div');

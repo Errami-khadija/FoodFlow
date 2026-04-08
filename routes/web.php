@@ -11,12 +11,17 @@ use App\Http\Controllers\Restaurant\CategoryController;
 use App\Http\Controllers\Restaurant\MenuController;
 use App\Http\Controllers\Restaurant\OrdersController as RestaurantOrdersController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
+use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\RestaurantRegistrationController;
 
 //Customer
 Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
 Route::get('/restaurants', [CustomerHomeController::class, 'restaurants'])->name('restaurants');
 Route::get('/restaurants/{id}', [CustomerHomeController::class, 'show'])->name('restaurant.show');
+ Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::delete('/cart/{id}', [CartController::class, 'destroy']);
+    Route::delete('/cart', [CartController::class, 'clear']);
 
 // Show registration form (public)
 Route::get('/restaurant/register', [RestaurantRegistrationController::class, 'showForm'])
