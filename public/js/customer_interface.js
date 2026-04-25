@@ -282,17 +282,35 @@ async function loadCart() {
     const data = await res.json();
 
     const container = document.getElementById('cart-items');
-    container.innerHTML = '';
+    container.innerHTML = ''; // reset first
 
     data.items.forEach(item => {
         container.innerHTML += `
-            <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow">
+        <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow">
+            
+            <div class="flex items-center gap-3">
+                <img src="/storage/${item.menu.image}" 
+                     class="w-16 h-16 rounded-lg object-cover" />
+
                 <div>
                     <h4 class="font-bold">${item.menu.name}</h4>
-                    <p class="text-sm text-gray-500">$${item.menu.price} x ${item.quantity}</p>
+                    <p class="text-sm text-gray-500">$${item.menu.price}</p>
                 </div>
-                <button onclick="removeItem(${item.id})" class="text-red-500">✕</button>
             </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="updateQuantity(${item.id}, -1)" 
+                    class="px-2 bg-gray-200 rounded">-</button>
+
+                <span>${item.quantity}</span>
+
+                <button onclick="updateQuantity(${item.id}, 1)" 
+                    class="px-2 bg-gray-200 rounded">+</button>
+
+                <button onclick="removeItem(${item.id})" 
+                    class="text-red-500 ml-3">✕</button>
+            </div>
+        </div>
         `;
     });
 
@@ -336,14 +354,46 @@ async function addToCart(menuId, restaurantId) {
     }
 
     loadCart();
+
+}
+
+//  Update quantity
+async function updateQuantity(id, change) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    await fetch(`/cart/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token
+        },
+        body: JSON.stringify({ change: change })
+    });
+
+    loadCart();
+}async function updateQuantity(id, change) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    await fetch(`/cart/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token
+        },
+        body: JSON.stringify({ change: change })
+    });
+
+    loadCart();
 }
 
 //  Remove item
 async function removeItem(id) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     await fetch(`/cart/${id}`, {
         method: 'DELETE',
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            'X-CSRF-TOKEN': token
         }
     });
 

@@ -22,6 +22,7 @@ Route::get('/restaurants/{id}', [CustomerHomeController::class, 'show'])->name('
     Route::post('/cart', [CartController::class, 'store']);
     Route::delete('/cart/{id}', [CartController::class, 'destroy']);
     Route::delete('/cart', [CartController::class, 'clear']);
+    Route::put('/cart/{id}', [CartController::class, 'updateQuantity']);
 
 // Show registration form (public)
 Route::get('/restaurant/register', [RestaurantRegistrationController::class, 'showForm'])

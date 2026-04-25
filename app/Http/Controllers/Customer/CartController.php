@@ -11,7 +11,7 @@ class CartController extends Controller
 {
     public function index()
 {
-    $cartItems = CartItem::with('menu')
+    $cartItems = CartItem::with('menu', 'restaurant')
         ->where('session_id', session()->getId())
         ->get();
 
@@ -22,14 +22,23 @@ class CartController extends Controller
     $delivery = $cartItems->first()?->restaurant->delivery_fee ?? 0;
 
     return response()->json([
-        'items' => $cartItems,
+        'items' => $cartItems->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'quantity' => $item->quantity,
+                'menu' => [
+                    'name' => $item->menu->name,
+                    'price' => $item->menu->price,
+                    'image' => $item->menu->image, 
+                ]
+            ];
+        }),
         'subtotal' => $subtotal,
         'delivery' => $delivery,
         'total' => $subtotal + $delivery,
         'count' => $cartItems->sum('quantity')
     ]);
 }
-
 public function store(Request $request)
 {
     $existingCart = CartItem::where('session_id', session()->getId())->first();
@@ -57,6 +66,22 @@ public function store(Request $request)
     }
 
     return $this->index();
+}
+
+
+public function updateQuantity(Request $request, $id)
+{
+    $item = CartItem::findOrFail($id);
+
+    $item->quantity += $request->change;
+
+    if ($item->quantity <= 0) {
+        $item->delete();
+    } else {
+        $item->save();
+    }
+
+    return response()->json(['success' => true]);
 }
 
 public function destroy($id)
