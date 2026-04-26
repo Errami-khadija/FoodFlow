@@ -1,7 +1,10 @@
-<div id="checkout-page" class="hidden pt-16 min-h-full bg-gray-50">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><button onclick="goBack()" class="flex items-center text-gray-600 hover:text-primary mb-6 transition-colors">
+@extends('layouts.homeLayout')
+
+@section('content')
+<div id="checkout-page" class=" pt-16 min-h-full bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><a href="{{ route('home') }}"  class="flex items-center text-gray-600 hover:text-primary mb-6 transition-colors">
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg> Back </button>
+      </svg> Back </a>
      <h1 class="text-3xl font-extrabold text-dark mb-8">Checkout</h1>
      <div class="grid lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2 space-y-6"><!-- Delivery Address -->
@@ -39,16 +42,41 @@
       <div>
        <div class="bg-white rounded-2xl p-6 shadow-lg sticky top-24">
         <h2 class="text-xl font-bold text-dark mb-4">Order Summary</h2>
-        <div id="checkout-items" class="space-y-3 mb-4 max-h-64 overflow-y-auto hide-scrollbar"><!-- Items populated by JS -->
+       <div class="space-y-3 mb-4 max-h-64 overflow-y-auto">
+@php $subtotal = 0; @endphp
+
+@foreach($cartItems as $item)
+    @php 
+        $subtotal += $item->menu->price * $item->quantity; 
+    @endphp
+    
+    <div class="flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="/storage/{{ $item->menu->image }}" class="w-12 h-12 rounded-lg">
+            <div>
+                <p class="font-semibold">{{ $item->menu->name }}</p>
+                <p class="text-sm text-gray-500">x{{ $item->quantity }}</p>
+            </div>
         </div>
+        <span class="font-bold">
+            ${{ number_format($item->menu->price * $item->quantity, 2) }}
+        </span>
+    </div>
+@endforeach
+</div>
         <div class="border-t pt-4 space-y-2">
-         <div class="flex justify-between text-gray-600"><span>Subtotal</span> <span id="checkout-subtotal">$0.00</span>
+          @php
+    $delivery = 2.99;
+    $service = 1.50;
+    $total = $subtotal + $delivery + $service;
+@endphp
+         <div class="flex justify-between text-gray-600"><span>Subtotal</span> <span id="checkout-subtotal">${{ number_format($subtotal, 2) }}</span>
          </div>
-         <div class="flex justify-between text-gray-600"><span>Delivery Fee</span> <span>$2.99</span>
+         <div class="flex justify-between text-gray-600"><span>Delivery Fee</span> <span>${{ $delivery }}</span>
          </div>
-         <div class="flex justify-between text-gray-600"><span>Service Fee</span> <span>$1.50</span>
+         <div class="flex justify-between text-gray-600"><span>Service Fee</span> <span>${{ $service }}</span>
          </div>
-         <div class="flex justify-between font-bold text-lg text-dark pt-2 border-t"><span>Total</span> <span id="checkout-total">$0.00</span>
+         <div class="flex justify-between font-bold text-lg text-dark pt-2 border-t"><span>Total</span> <span id="checkout-total">${{ number_format($total, 2) }}</span>
          </div>
         </div><button onclick="placeOrder()" class="w-full mt-6 py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-orange-200 transition-all"> Place Order </button>
         <p class="text-center text-sm text-gray-500 mt-4">🔒 Secure checkout powered by FoodFlow</p>
@@ -57,3 +85,4 @@
      </div>
     </div>
    </div>
+@endsection

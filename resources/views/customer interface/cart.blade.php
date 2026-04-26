@@ -17,7 +17,7 @@
       </div>
       <div class="flex justify-between text-xl font-bold mb-4"><span>Total</span> <span id="cart-total">$2.99</span>
       </div>
-      <button onclick="goToCheckout()" id="checkout-btn" class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled> Proceed to Checkout </button>
+      <a href="{{ route('checkout') }}"  id="checkout-btn" class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled> Proceed to Checkout </a>
      </div>
     </div>
    </div>

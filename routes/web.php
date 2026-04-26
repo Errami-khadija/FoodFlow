@@ -18,11 +18,14 @@ use App\Http\Controllers\RestaurantRegistrationController;
 Route::get('/', [CustomerHomeController::class, 'index'])->name('home');
 Route::get('/restaurants', [CustomerHomeController::class, 'restaurants'])->name('restaurants');
 Route::get('/restaurants/{id}', [CustomerHomeController::class, 'show'])->name('restaurant.show');
- Route::get('/cart', [CartController::class, 'index']);
-    Route::post('/cart', [CartController::class, 'store']);
-    Route::delete('/cart/{id}', [CartController::class, 'destroy']);
-    Route::delete('/cart', [CartController::class, 'clear']);
-    Route::put('/cart/{id}', [CartController::class, 'updateQuantity']);
+Route::get('/cart', [CartController::class, 'index']);
+Route::post('/cart', [CartController::class, 'store']);
+Route::delete('/cart/{id}', [CartController::class, 'destroy']);
+Route::delete('/cart', [CartController::class, 'clear']);
+Route::put('/cart/{id}', [CartController::class, 'updateQuantity']);
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
+
 
 // Show registration form (public)
 Route::get('/restaurant/register', [RestaurantRegistrationController::class, 'showForm'])

@@ -98,4 +98,15 @@ public function clear()
     CartItem::where('session_id', session()->getId())->delete();
     return response()->json(['success' => true]);
 }
+
+public function checkout()
+{
+ 
+     $cartItems = CartItem::with('menu')
+        ->where('session_id', session()->getId())
+        ->get();
+   
+
+    return view('customer interface.checkout', compact('cartItems'));
+}
 }

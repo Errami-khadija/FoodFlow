@@ -426,11 +426,6 @@ document.addEventListener('DOMContentLoaded', loadCart);
       }
     }
 
-    function goToCheckout() {
-      if (cart.length === 0) return;
-      toggleCartSidebar();
-      navigateTo('checkout');
-    }
 
     // Checkout
     function renderCheckout() {
