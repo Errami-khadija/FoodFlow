@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Restaurant;
 use App\Models\Menu;
+use App\Models\OrderItem;
 
 class Order extends Model
 {
@@ -13,7 +14,14 @@ class Order extends Model
         'user_id',
         'restaurant_id',
         'total_price',
-        'status'
+        'status',
+
+        'full_name',
+    'phone',
+    'address',
+    'city',
+    'zip',
+    'payment_method'
     ];
 
     public function user()
@@ -30,5 +38,9 @@ class Order extends Model
 {
     return $this->belongsToMany(Menu::class, 'order_items')
                 ->withPivot('quantity', 'price');
+}
+public function items()
+{
+    return $this->hasMany(OrderItem::class);
 }
 }

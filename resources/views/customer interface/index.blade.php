@@ -64,8 +64,7 @@
    </div>
 
    
-   <!-- Checkout Page -->
-    @include('customer interface.checkout')
+
    <!-- Order Tracking Page -->
    @include('customer interface.order-tracking')
    </div>

@@ -55,7 +55,7 @@
             <img src="/storage/{{ $item->menu->image }}" class="w-12 h-12 rounded-lg">
             <div>
                 <p class="font-semibold">{{ $item->menu->name }}</p>
-                <p class="text-sm text-gray-500">x{{ $item->quantity }}</p>
+                <p class="text-sm text-gray-500">x{{ $item->quantity}}</p>
             </div>
         </div>
         <span class="font-bold">

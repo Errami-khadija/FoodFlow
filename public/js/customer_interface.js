@@ -447,19 +447,34 @@ document.addEventListener('DOMContentLoaded', loadCart);
       document.getElementById('checkout-total').textContent = `$${total.toFixed(2)}`;
     }
 
-    function placeOrder() {
-      // Generate random order number
-      const orderNum = Math.floor(100000 + Math.random() * 900000);
-      document.getElementById('order-number').textContent = orderNum;
-      
-      // Clear cart
-      cart = [];
-      updateCartUI();
-      
-      // Navigate to tracking
-      navigateTo('tracking');
-    }
+   async function placeOrder() {
+    const data = {
+        full_name: document.getElementById('full-name').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        zip: document.getElementById('zip').value,
+        payment_method: document.querySelector('input[name="payment"]:checked').value,
+    };
 
+    const res = await fetch('/place-order', {
+        method: 'POST',
+       headers: {
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+},
+        body: JSON.stringify(data)
+    });
+const text = await res.text();
+console.log(text);
+
+    if (res.ok) {
+        alert("Order placed successfully 🎉");
+        window.location.href = "/";
+    } else {
+        alert("Error placing order");
+    }
+}
     // Order tracking simulation
     function startOrderTracking() {
       let stage = 1;

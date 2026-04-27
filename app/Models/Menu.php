@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Restaurant;
+use App\Models\OrderItem;
 
 class Menu extends Model
 { 
@@ -36,5 +37,10 @@ public function orders()
 
  public function restaurant()
  {   return $this->belongsTo(Restaurant::class);}
+
+ public function orderItems()
+{
+    return $this->hasMany(OrderItem::class);
+}
 
 }
