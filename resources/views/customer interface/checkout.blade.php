@@ -26,16 +26,9 @@
        <div class="bg-white rounded-2xl p-6 shadow-lg">
         <h2 class="text-xl font-bold text-dark mb-4 flex items-center"><span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-sm">2</span> Payment Method</h2>
         <p class="text-sm text-amber-600 bg-amber-50 rounded-lg p-3 mb-4 flex items-center"><span class="mr-2">⚠️</span> <span>Demo Mode: No actual payment will be processed</span></p>
-        <div class="space-y-3"><label class="flex items-center p-4 border-2 border-primary rounded-xl bg-orange-50 cursor-pointer"> <input type="radio" name="payment" value="card" checked class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💳 Credit/Debit Card</span> </label> <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-colors"> <input type="radio" name="payment" value="paypal" class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">🅿️ PayPal</span> </label> <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-colors"> <input type="radio" name="payment" value="cash" class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💵 Cash on Delivery</span> </label>
+        <div class="space-y-3"><label class="flex items-center p-4 border-2 border-primary rounded-xl bg-orange-50 cursor-pointer"> <input type="radio" name="payment" value="card" checked class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💳 Credit/Debit Card</span> </label> <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-colors"> <input type="radio" name="payment" value="cash" class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💵 Cash on Delivery</span> </label>
         </div>
-        <div id="card-details" class="mt-6 grid md:grid-cols-2 gap-4">
-         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2" for="card-number">Card Number</label> <input type="text" id="card-number" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="1234 5678 9012 3456">
-         </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="expiry">Expiry Date</label> <input type="text" id="expiry" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="MM/YY">
-         </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="cvv">CVV</label> <input type="text" id="cvv" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="123">
-         </div>
-        </div>
+        
        </div>
       </div>
       <!-- Order Summary -->

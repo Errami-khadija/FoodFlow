@@ -447,31 +447,75 @@ document.addEventListener('DOMContentLoaded', loadCart);
       document.getElementById('checkout-total').textContent = `$${total.toFixed(2)}`;
     }
 
-   async function placeOrder() {
+  async function placeOrder() {
+    const payment = document.querySelector('input[name="payment"]:checked').value;
+
     const data = {
         full_name: document.getElementById('full-name').value,
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
         city: document.getElementById('city').value,
         zip: document.getElementById('zip').value,
-        payment_method: document.querySelector('input[name="payment"]:checked').value,
+        payment_method: payment,
     };
 
+    // CARD
+    if (payment === 'card') {
+        const res = await fetch('/pay', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify(data)
+        });
+
+        const text = await res.text();
+        console.log(text);
+
+       if (!res.ok) {
+    console.error("Server response:", text); 
+    alert("Payment error");
+    return;
+}
+
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error("Invalid JSON:", text);
+            alert("Server error");
+            return;
+        }
+
+       if (!result.url) {
+    console.error("Missing Stripe URL:", result);
+    alert("Payment setup error");
+    return;
+}
+
+window.location.href = result.url;
+        return;
+    }
+
+    // CASH
     const res = await fetch('/place-order', {
         method: 'POST',
-       headers: {
-    'Content-Type': 'application/json',
-    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-},
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
         body: JSON.stringify(data)
     });
-const text = await res.text();
-console.log(text);
+
+    const text = await res.text();
+    console.log(text);
 
     if (res.ok) {
         alert("Order placed successfully 🎉");
         window.location.href = "/";
     } else {
+        console.error(text);
         alert("Error placing order");
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Restaurant\MenuController;
 use App\Http\Controllers\Restaurant\OrdersController as RestaurantOrdersController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\PaymentController;
 use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\RestaurantRegistrationController;
 
@@ -26,6 +27,8 @@ Route::delete('/cart', [CartController::class, 'clear']);
 Route::put('/cart/{id}', [CartController::class, 'updateQuantity']);
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/place-order', [CustomerOrderController::class, 'store']);
+Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
+Route::get('/success', [CustomerOrderController::class, 'success']);
 
 
 
