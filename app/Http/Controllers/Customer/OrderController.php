@@ -69,7 +69,8 @@ class OrderController extends Controller
 
         CartItem::where('session_id', session()->getId())->delete();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true,
+          'order_id' => $order->id]);
 
     } catch (\Exception $e) {
         return response()->json([
@@ -132,5 +133,12 @@ public function success()
     session()->forget('checkout');
 
     return view('customer interface.success', compact('order'));
+}
+
+public function status($id)
+{
+    $order = Order::findOrFail($id);
+
+    return view('customer interface.order-tracking', compact('order'));
 }
 }

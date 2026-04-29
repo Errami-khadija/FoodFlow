@@ -63,10 +63,6 @@
     </footer>
    </div>
 
-   
-
-   <!-- Order Tracking Page -->
-   @include('customer interface.order-tracking')
    </div>
    
     <!-- Restaurant Registration Modal -->

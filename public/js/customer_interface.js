@@ -142,7 +142,7 @@
           mapToEditPanelValues
         });
       }
-      renderRestaurantsList();
+
     }
 
     async function onConfigChange(config) {
@@ -254,6 +254,82 @@
       window.scrollTo(0, 0);
     }
 
+    window.startOrderTracking = function () {
+    console.log("Tracking started");
+
+    const orderId = document.getElementById('order-number').textContent;
+
+    const titles = [
+        "Order Pending ⏳",
+        "Order Confirmed ✅",
+        "Preparing 👨‍🍳",
+        "Out for Delivery 🚗",
+        "Delivered 📦"
+    ];
+
+    const statusMap = {
+        pending: 0,
+        confirmed: 1,
+        preparing: 2,
+        delivery: 3,
+        delivered: 4
+    };
+
+    const progressHeights = ['20%', '40%', '60%', '80%', '100%'];
+
+    const circles = [
+        'pending-circle',
+        'confirmed-circle',
+        'preparing-circle',
+        'delivery-circle',
+        'delivered-circle'
+    ];
+
+    async function updateTracking() {
+        const res = await fetch(`/order/${orderId}/status`);
+        const data = await res.json();
+
+        const stage = statusMap[data.status];
+
+        // ✅ Title
+        const titleEl = document.getElementById('status-title');
+        if (titleEl) {
+            titleEl.textContent = titles[stage];
+        }
+
+        // Progress
+        document.getElementById('progress-line').style.height = progressHeights[stage];
+
+        // Reset circles
+        circles.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove('bg-green-500', 'shadow-lg');
+                el.classList.add('bg-gray-200');
+            }
+        });
+
+        // Activate circles
+        for (let i = 0; i <= stage; i++) {
+            const el = document.getElementById(circles[i]);
+            if (el) {
+                el.classList.remove('bg-gray-200');
+                el.classList.add('bg-green-500', 'shadow-lg');
+            }
+        }
+
+        // ETA
+        const etas = ['30-40', '25-35', '15-25', '5-10', '0'];
+        document.getElementById('eta-time').textContent = etas[stage];
+    }
+
+    //  run immediately
+    updateTracking();
+
+    //  run every 5 sec
+    setInterval(updateTracking, 5000);
+};
+
     function goBack() {
       if (navigationHistory.length > 0) {
         const previousPage = navigationHistory.pop();
@@ -282,12 +358,13 @@ async function loadCart() {
     const data = await res.json();
 
     const container = document.getElementById('cart-items');
-    container.innerHTML = ''; // reset first
+    if (!container) return; 
+
+    container.innerHTML = '';
 
     data.items.forEach(item => {
         container.innerHTML += `
         <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow">
-            
             <div class="flex items-center gap-3">
                 <img src="/storage/${item.menu.image}" 
                      class="w-16 h-16 rounded-lg object-cover" />
@@ -314,11 +391,18 @@ async function loadCart() {
         `;
     });
 
-    document.getElementById('cart-subtotal').innerText = `$${data.subtotal}`;
-    document.getElementById('cart-total').innerText = `$${data.total}`;
-    document.getElementById('floating-cart-count').innerText = data.count;
+    
+    const subtotalEl = document.getElementById('cart-subtotal');
+    if (subtotalEl) subtotalEl.innerText = `$${data.subtotal}`;
 
-    document.getElementById('checkout-btn').disabled = data.count === 0;
+    const totalEl = document.getElementById('cart-total');
+    if (totalEl) totalEl.innerText = `$${data.total}`;
+
+    const countEl = document.getElementById('floating-cart-count');
+    if (countEl) countEl.innerText = data.count;
+
+    const checkoutBtn = document.getElementById('checkout-btn');
+    if (checkoutBtn) checkoutBtn.disabled = data.count === 0;
 }
 
 //  Add to cart
@@ -511,42 +595,17 @@ window.location.href = result.url;
     const text = await res.text();
     console.log(text);
 
-    if (res.ok) {
-        alert("Order placed successfully 🎉");
-        window.location.href = "/";
-    } else {
-        console.error(text);
-        alert("Error placing order");
-    }
+  const result = JSON.parse(text);
+
+if (res.ok) {
+    window.location.href = `/order/${result.order_id}/status`;
+} else {
+    console.error(text);
+    alert("Error placing order");
 }
-    // Order tracking simulation
-    function startOrderTracking() {
-      let stage = 1;
-      const stages = ['pending', 'preparing', 'delivery', 'delivered'];
-      const progressHeights = ['25%', '50%', '75%', '100%'];
-      const circles = ['preparing-circle', 'delivery-circle', 'delivered-circle'];
-      
-      const interval = setInterval(() => {
-        if (stage < stages.length) {
-          // Update progress line
-          document.getElementById('progress-line').style.height = progressHeights[stage];
-          
-          // Update circle color
-          if (circles[stage - 1]) {
-            document.getElementById(circles[stage - 1]).classList.remove('bg-gray-200');
-            document.getElementById(circles[stage - 1]).classList.add('bg-green-500', 'shadow-lg');
-          }
-          
-          // Update ETA
-          const etas = ['25-35', '15-25', '5-10', '0'];
-          document.getElementById('eta-time').textContent = etas[stage];
-          
-          stage++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 3000);
-    }
+    
+}
+ 
 
     // Review management
     let reviews = [
@@ -598,7 +657,7 @@ window.location.href = result.url;
       });
       
       // Update UI
-      updateReviewsDisplay();
+     // updateReviewsDisplay();
       
       // Reset form
       document.getElementById('review-form').reset();
@@ -611,41 +670,41 @@ window.location.href = result.url;
       showSuccessNotification('Thank you for your review!');
     }
 
-    function updateReviewsDisplay() {
-      const container = document.getElementById('reviews-container');
-      const totalReviews = document.getElementById('total-reviews');
+    // function updateReviewsDisplay() {
+    //   const container = document.getElementById('reviews-container');
+    //   const totalReviews = document.getElementById('total-reviews');
       
-      // Calculate average rating
-      const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+    //   // Calculate average rating
+    //   const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
       
-      // Update total
-      totalReviews.textContent = reviews.length;
+    //   // Update total
+    //   totalReviews.textContent = reviews.length;
       
-      // Generate star display
-      function getStars(rating) {
-        return '⭐'.repeat(rating) + (rating < 5 ? '☆'.repeat(5 - rating) : '');
-      }
+    //   // Generate star display
+    //   function getStars(rating) {
+    //     return '⭐'.repeat(rating) + (rating < 5 ? '☆'.repeat(5 - rating) : '');
+    //   }
       
-      // Render reviews
-      container.innerHTML = reviews.map((review, idx) => `
-        <div class="border border-gray-200 rounded-2xl p-4 hover:shadow-md transition-shadow animate-fade-in" style="animation-delay: ${idx * 50}ms;">
-          <div class="flex items-start justify-between mb-2">
-            <div>
-              <h4 class="font-semibold text-dark">${review.name}</h4>
-              <p class="text-xs text-gray-500">${review.date}</p>
-            </div>
-            <span class="text-yellow-500 text-sm">${getStars(review.rating)}</span>
-          </div>
-          <p class="text-gray-600 text-sm">"${review.comment}"</p>
-        </div>
-      `).join('');
+    //   // Render reviews
+    //   container.innerHTML = reviews.map((review, idx) => `
+    //     <div class="border border-gray-200 rounded-2xl p-4 hover:shadow-md transition-shadow animate-fade-in" style="animation-delay: ${idx * 50}ms;">
+    //       <div class="flex items-start justify-between mb-2">
+    //         <div>
+    //           <h4 class="font-semibold text-dark">${review.name}</h4>
+    //           <p class="text-xs text-gray-500">${review.date}</p>
+    //         </div>
+    //         <span class="text-yellow-500 text-sm">${getStars(review.rating)}</span>
+    //       </div>
+    //       <p class="text-gray-600 text-sm">"${review.comment}"</p>
+    //     </div>
+    //   `).join('');
       
-      // Update average rating display
-      const ratingDisplay = document.querySelector('.text-3xl.font-extrabold.gradient-text');
-      if (ratingDisplay) {
-        ratingDisplay.textContent = avgRating;
-      }
-    }
+    //   // Update average rating display
+    //   const ratingDisplay = document.querySelector('.text-3xl.font-extrabold.gradient-text');
+    //   if (ratingDisplay) {
+    //     ratingDisplay.textContent = avgRating;
+    //   }
+    // }
 
     function showSuccessNotification(message) {
       const notification = document.createElement('div');
@@ -657,9 +716,8 @@ window.location.href = result.url;
 
     // Initialize on load
     init();
-    updateCartUI();
     setupStarRating();
-    updateReviewsDisplay();
+    // updateReviewsDisplay();
 
     // Restaurant registration functions
 
@@ -748,5 +806,11 @@ window.closeRestaurantRegister = function() {
 
     });
 
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById('tracking-page')) {
+        startOrderTracking();
+    }
 });
 (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d63c070652de27d',t:'MTc3MjQ4OTYzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();

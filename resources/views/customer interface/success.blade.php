@@ -16,7 +16,7 @@
         </div>
 
         <h1 class="text-2xl font-bold text-gray-800 mb-2">
-            Payment Successful 🎉
+           Order Placed Successfully!
         </h1>
 
         <p class="text-gray-500 mb-6">
@@ -30,6 +30,10 @@
         <a href="{{ route('home') }}"
            class="inline-block bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition">
             Back to Home
+        </a>
+        <a href="{{ url('/order/' . $order->id . '/status') }}"
+           class="inline-block bg-gray-200 text-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-300 transition ml-4">
+            Track Order
         </a>
 
     </div>

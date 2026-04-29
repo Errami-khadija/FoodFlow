@@ -29,6 +29,7 @@ Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/place-order', [CustomerOrderController::class, 'store']);
 Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
 Route::get('/success', [CustomerOrderController::class, 'success']);
+Route::get('/order/{id}/status', [CustomerOrderController::class, 'status']);
 
 
 
