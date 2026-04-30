@@ -80,7 +80,11 @@
     </div>
 
     <script>
-    startOrderTracking();
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof startOrderTracking === 'function') {
+            startOrderTracking();
+        }
+    });
 </script>
 
    @endsection

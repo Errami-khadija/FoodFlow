@@ -598,7 +598,7 @@ window.location.href = result.url;
   const result = JSON.parse(text);
 
 if (res.ok) {
-    window.location.href = `/order/${result.order_id}/status`;
+   window.location.href = `/order/${result.order_id}`;
 } else {
     console.error(text);
     alert("Error placing order");

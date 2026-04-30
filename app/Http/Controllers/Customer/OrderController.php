@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\CartItem;
-
+use Stripe\Checkout\Session as StripeSession;
+use Stripe\Stripe;
 
 
 class OrderController extends Controller
@@ -81,8 +82,24 @@ class OrderController extends Controller
 
 
 
-public function success()
+public function success(Request $request)
 {
+    Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    $sessionId = $request->get('session_id');
+
+    if (!$sessionId) {
+        return redirect('/')->with('error', 'Invalid payment session');
+    }
+
+    $session = StripeSession::retrieve($sessionId);
+
+    // Optional: check payment status
+    if ($session->payment_status !== 'paid') {
+        return redirect('/')->with('error', 'Payment not completed');
+    }
+
+    // Now create order (same logic as before)
     $cartItems = CartItem::where('session_id', session()->getId())->get();
 
     if ($cartItems->isEmpty()) {
@@ -92,7 +109,6 @@ public function success()
     $restaurant_id = $cartItems->first()->restaurant_id;
 
     $subtotal = 0;
-
     foreach ($cartItems as $item) {
         $subtotal += $item->menu->price * $item->quantity;
     }
@@ -101,7 +117,6 @@ public function success()
     $service = 1.50;
     $total = $subtotal + $delivery + $service;
 
-    //  Create Order AFTER payment
     $order = Order::create([
         'restaurant_id' => $restaurant_id,
         'total_price' => $total,
@@ -113,10 +128,11 @@ public function success()
         'zip' => session('checkout.zip'),
 
         'payment_method' => 'card',
-        'status' => 'paid',
+
+    
+        'status' => 'confirmed',
     ]);
 
-    // Save items
     foreach ($cartItems as $item) {
         OrderItem::create([
             'order_id' => $order->id,
@@ -126,18 +142,25 @@ public function success()
         ]);
     }
 
-    // Clear cart
     CartItem::where('session_id', session()->getId())->delete();
-
-    //  Clear stored checkout data
     session()->forget('checkout');
 
-    return view('customer interface.success', compact('order'));
+    // REDIRECT TO TRACKING PAGE
+    return redirect()->route('customer.order.show', $order->id);
 }
 
 public function status($id)
 {
     $order = Order::findOrFail($id);
+
+    return response()->json([
+        'status' => $order->status
+    ]);
+}
+
+public function show($id)
+{
+    $order = Order::with('items.menu')->findOrFail($id);
 
     return view('customer interface.order-tracking', compact('order'));
 }

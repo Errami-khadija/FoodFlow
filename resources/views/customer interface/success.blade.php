@@ -31,7 +31,7 @@
            class="inline-block bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition">
             Back to Home
         </a>
-        <a href="{{ url('/order/' . $order->id . '/status') }}"
+        <a href="/order/{{ $order->id }}"
            class="inline-block bg-gray-200 text-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-300 transition ml-4">
             Track Order
         </a>
