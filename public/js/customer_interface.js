@@ -526,37 +526,32 @@ if (res.ok) {
       });
     }
 
-    function submitReview(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('reviewer-name').value;
-      const email = document.getElementById('reviewer-email').value;
-      const rating = parseInt(document.getElementById('review-rating').value);
-      const comment = document.getElementById('reviewer-comment').value;
-      
-      if (!name || !comment) return;
-      
-      // Add new review
-      reviews.unshift({
-        name,
-        rating,
-        comment,
-        date: 'Just now'
-      });
-      
-      // Update UI
-     // updateReviewsDisplay();
-      
-      // Reset form
-      document.getElementById('review-form').reset();
-      document.getElementById('review-rating').value = '5';
-      
-      // Reset star buttons to 5 stars
-      setupStarRating();
-      
-      // Show success message
-      showSuccessNotification('Thank you for your review!');
+    async function submitReview(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById('reviewer-name').value,
+        email: document.getElementById('reviewer-email').value,
+        rating: document.getElementById('review-rating').value,
+        comment: document.getElementById('reviewer-comment').value,
+    };
+
+    const res = await fetch('/reviews', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+        alert('Review submitted!');
+        location.reload(); 
     }
+}
 
     // function updateReviewsDisplay() {
     //   const container = document.getElementById('reviews-container');

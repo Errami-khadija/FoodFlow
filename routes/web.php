@@ -13,6 +13,7 @@ use App\Http\Controllers\Restaurant\OrdersController as RestaurantOrdersControll
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\PaymentController;
+use App\Http\Controllers\Customer\ReviewController;
 use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\RestaurantRegistrationController;
 
@@ -31,6 +32,8 @@ Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
 Route::get('/success', [CustomerOrderController::class, 'success']);
 Route::get('/order/{id}/status', [CustomerOrderController::class, 'status']);
 Route::get('/order/{id}', [CustomerOrderController::class, 'show'])->name('customer.order.show');
+
+Route::post('/reviews', [ReviewController::class, 'store']);
 
 
 
