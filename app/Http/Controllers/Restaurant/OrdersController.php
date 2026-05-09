@@ -8,9 +8,22 @@ use App\Models\Order;
 
 class OrdersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 {
-    $orders = Order::with('menus')->latest()->get();
+    $query = Order::query();
+
+    if ($request->status && $request->status !== 'all') {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->search) {
+       $query->where(function ($q) use ($request) {
+    $q->where('full_name', 'like', '%' . $request->search . '%')
+      ->orWhere('phone', 'like', '%' . $request->search . '%');
+});
+    }
+
+    $orders = $query->latest()->get();
 
      return view('restaurant_interface.index', [
         'section' => 'restaurant_interface.sections.orders.index',
@@ -18,31 +31,6 @@ class OrdersController extends Controller
     ]);
 }
 
-public function store(Request $request)
-{
-    $order = Order::create([
-        'customer_name' => $request->customer_name,
-        'status' => 'pending',
-        'total_price' => 0
-    ]);
-
-    $total = 0;
-
-    foreach ($request->items as $item) {
-        $menuItem = Item::find($item['id']);
-
-        $order->items()->attach($menuItem->id, [
-            'quantity' => $item['quantity'],
-            'price' => $menuItem->price
-        ]);
-
-        $total += $menuItem->price * $item['quantity'];
-    }
-
-    $order->update(['total_price' => $total]);
-
-    return redirect()->back();
-}
 
 public function update(Request $request, $id)
 {
@@ -59,10 +47,7 @@ public function show($id)
 {
     $order = Order::with('menus')->findOrFail($id);
 
-     return view('restaurant_interface.index', [
-        'section' => 'restaurant_interface.sections.orders.show',
-        'order' => $order,
-    ]);
+    return view('restaurant_interface.sections.orders.show', compact('order'));
 }
 
 public function destroy($id)

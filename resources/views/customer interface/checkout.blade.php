@@ -11,22 +11,29 @@
        <div class="bg-white rounded-2xl p-6 shadow-lg">
         <h2 class="text-xl font-bold text-dark mb-4 flex items-center"><span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-sm">1</span> Delivery Address</h2>
         <div class="grid md:grid-cols-2 gap-4">
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="full-name">Full Name</label> <input type="text" id="full-name" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="John Doe">
+         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="full-name">Full Name</label> <input type="text" name="customer_name" id="full-name" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="John Doe">
          </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="phone">Phone Number</label> <input type="tel" id="phone" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="+1 (555) 000-0000">
+         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="phone">Phone Number</label> <input type="tel" name="customer_phone" id="phone" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="+1 (555) 000-0000">
          </div>
-         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2" for="address">Street Address</label> <input type="text" id="address" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="123 Main Street, Apt 4B">
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2" for="address">Street Address</label> <input type="text" name="customer_address" id="address" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="123 Main Street, Apt 4B">
          </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="city">City</label> <input type="text" id="city" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="New York">
+         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="city">City</label> <input type="text" name="customer_city" id="city" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="New York">
          </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="zip">ZIP Code</label> <input type="text" id="zip" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="10001">
+         <div><label class="block text-sm font-medium text-gray-700 mb-2" for="zip">ZIP Code</label> <input type="text" name="customer_zip" id="zip" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:outline-none" placeholder="10001">
          </div>
         </div>
        </div><!-- Payment Method -->
        <div class="bg-white rounded-2xl p-6 shadow-lg">
-        <h2 class="text-xl font-bold text-dark mb-4 flex items-center"><span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-sm">2</span> Payment Method</h2>
+        <h2 class="text-xl font-bold text-dark mb-4 flex items-center">
+            <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-sm">2</span> Payment Method</h2>
         <p class="text-sm text-amber-600 bg-amber-50 rounded-lg p-3 mb-4 flex items-center"><span class="mr-2">⚠️</span> <span>Demo Mode: No actual payment will be processed</span></p>
-        <div class="space-y-3"><label class="flex items-center p-4 border-2 border-primary rounded-xl bg-orange-50 cursor-pointer"> <input type="radio" name="payment" value="card" checked class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💳 Credit/Debit Card</span> </label> <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-colors"> <input type="radio" name="payment" value="cash" class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💵 Cash on Delivery</span> </label>
+        <div class="space-y-3">
+            <label class="flex items-center p-4 border-2 border-primary rounded-xl bg-orange-50 cursor-pointer"> 
+                <input type="radio" name="payment" value="card" checked class="w-5 h-5 text-primary"> 
+                <span class="ml-3 font-medium">💳 Credit/Debit Card</span> </label> 
+                <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-colors"> 
+                <input type="radio" name="payment" value="cash" class="w-5 h-5 text-primary"> <span class="ml-3 font-medium">💵 Cash on Delivery</span> </label>
+    
         </div>
         
        </div>

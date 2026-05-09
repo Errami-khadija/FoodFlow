@@ -1,10 +1,28 @@
 <div id="page-orders" class="page">
+   
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
        <div class="p-6 border-b border-gray-100">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
          <h3 class="font-bold text-gray-800 text-lg">All Orders</h3>
-         <div class="flex items-center gap-3"><select id="status-filter" class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"> <option value="all">All Status</option> <option value="pending">Pending</option> <option value="preparing">Preparing</option> <option value="delivered">Delivered</option> </select> <input type="text" placeholder="Search orders..." class="text-sm border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 w-48">
-         </div>
+        <form method="GET" action="{{ route('restaurant.orders') }}" class="flex items-center gap-3">
+
+    <select name="status" onchange="this.form.submit()"
+        class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500">
+
+        <option value="all">All Status</option>
+        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+        <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+        <option value="preparing" {{ request('status') == 'preparing' ? 'selected' : '' }}>Preparing</option>
+        <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>Delivered</option>
+    </select>
+
+    <input type="text" name="search" value="{{ request('search') }}"
+        placeholder="Search orders..."
+        onkeyup="debounceSubmit(this.form)"
+        class="text-sm border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 w-48">
+
+</form>
         </div>
        </div>
        <div class="overflow-x-auto">
@@ -29,7 +47,7 @@
 
             <!-- Customer -->
             <td class="px-6 py-4 text-sm text-gray-600">
-                {{ $order->user->name ?? $order->customer_name ?? 'Guest' }}
+                {{ $order->user->name ?? $order->full_name?? 'Guest' }}
             </td>
 
             <!-- Total -->
@@ -42,8 +60,12 @@
                 <span class="px-3 py-1 text-xs font-medium rounded-full 
                     @if($order->status == 'pending')
                         bg-yellow-100 text-yellow-700
+                    @elseif ($order->status == 'paid')
+                        bg-purple-100 text-purple-700
                     @elseif($order->status == 'preparing')
                         bg-blue-100 text-blue-700
+                    @elseif($order->status =='confirmed')
+                        bg-orange-100 text-orange-700
                     @elseif($order->status == 'delivered')
                         bg-green-100 text-green-700
                     @else
@@ -59,7 +81,7 @@
                 <div class="flex items-center gap-2">
 
                     <!-- View -->
-                    <button onclick="openModal('order-detail-modal')" data-id="{{ $order->id }}"
+                    <button  onclick="openOrderModal({{ $order->id }})"
                         class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-gray-700">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -69,13 +91,23 @@
                         </svg>
 </button>
 
+@php
+    $nextStatus = match($order->status) {
+        'pending' =>'confirmed',
+        'confirmed'=>'preparing',
+        'paid' => 'preparing',
+        'preparing' => 'delivered',
+        default => null,
+    };
+@endphp
+
                     <!-- Update -->
-                    <form action="{{ route('restaurant.orders.update', $order->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
+                 @if($nextStatus)
+<form action="{{ route('restaurant.orders.update', $order->id) }}" method="POST">
+    @csrf
+    @method('PUT')
 
-                        <input type="hidden" name="status" value="preparing">
-
+    <input type="hidden" name="status" value="{{ $nextStatus }}">
                         <button type="submit"
                             class="p-2 hover:bg-orange-50 rounded-lg text-orange-500 hover:text-orange-600">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,6 +116,7 @@
                             </svg>
                         </button>
                     </form>
+@endif
 
                 </div>
             </td>
@@ -96,4 +129,6 @@
       </div>
      </div>
 
-@include('restaurant_interface.sections.orders.show')
+ <div id="order-modal-container"></div>
+
+

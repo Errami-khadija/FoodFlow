@@ -1,13 +1,13 @@
-<div id="order-detail-modal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 p-4">
+<div id="order-detail-modal"  class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50">>
 
     <!-- Modal Card -->
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-fadeIn scale-95 hover:scale-100 transition">
 
         <!-- Header -->
         <div class="flex items-center justify-between p-5 border-b border-gray-100">
-            <h2 class="text-lg font-semibold text-gray-800">
-                Order #ORD-{{ $order->id }}
-            </h2>
+           <h2 class="text-lg font-semibold text-gray-800">
+    Order <span class="text-orange-500">#ORD-{{ $order->id }}</span>
+</h2>
 
             <!-- Close Button -->
             <button onclick="closeModal('order-detail-modal')" 
@@ -21,10 +21,44 @@
 
             <!-- Customer -->
             <div class="flex items-center justify-between">
-                <span class="text-gray-500">Customer</span>
-                <span class="font-medium text-gray-800">
-                    {{ $order->customer_name }}
-                </span>
+               <div class="space-y-3">
+
+    <div class="flex justify-between">
+        <span class="text-gray-500">Customer</span>
+        <span class="font-medium text-gray-800">
+            {{ $order->full_name ?? optional($order->user)->name ?? 'Guest' }}
+        </span>
+    </div>
+
+    <div class="flex justify-between">
+        <span class="text-gray-500">Phone</span>
+        <span class="font-medium text-gray-800">
+            {{ $order->phone }}
+        </span>
+    </div>
+
+    <div class="flex justify-between">
+        <span class="text-gray-500">Address</span>
+        <span class="font-medium text-gray-800 text-right max-w-[60%]">
+            {{ $order->address }}
+        </span>
+    </div>
+
+    <div class="flex justify-between">
+        <span class="text-gray-500">City</span>
+        <span class="font-medium text-gray-800">
+            {{ $order->city }}
+        </span>
+    </div>
+
+    <div class="flex justify-between">
+        <span class="text-gray-500">ZIP</span>
+        <span class="font-medium text-gray-800">
+            {{ $order->zip }}
+        </span>
+    </div>
+
+</div>
             </div>
 
             <!-- Status -->
@@ -33,6 +67,8 @@
                     'pending' => 'bg-yellow-100 text-yellow-700',
                     'preparing' => 'bg-blue-100 text-blue-700',
                     'delivered' => 'bg-green-100 text-green-700',
+                    'paid' => 'bg-purple-100 text-purple-700',
+                    'confirmed' => 'bg-orange-100 text-orange-700',
                 ];
             @endphp
 

@@ -124,6 +124,8 @@
       overlay.classList.add('hidden');
     }
 
+    
+
 
 document.querySelectorAll('.delete-btn').forEach(button => {
     button.addEventListener('click', function () {
@@ -220,6 +222,26 @@ document.getElementById('edit_image').addEventListener('change', function(e) {
       openModal('order-detail-modal');
     }
 
+
+    function openOrderModal(orderId) {
+        // Fetch order details via AJAX
+        fetch(`/restaurant/orders/${orderId}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('order-modal-container').innerHTML = html;
+                document.getElementById('order-detail-modal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error fetching order details:', error);
+                alert('Failed to load order details. Please try again.');
+            });
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+
     function updateOrderStatus(orderId) {
       const order = orders.find(o => o.id === orderId);
       if (!order) return;
@@ -253,6 +275,17 @@ function confirmDelete(button) {
         }
     });
 }
+
+
+let timeout;
+
+function debounceSubmit(form) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        form.submit();
+    }, 400);
+}
+
 
 
 function openEditModal(button) {
