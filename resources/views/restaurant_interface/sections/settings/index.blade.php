@@ -1,4 +1,4 @@
-  <div id="page-settings" class="page hidden">
+  <div id="page-settings" class="page">
       <div class="max-w-2xl">
        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
         <div class="p-6 border-b border-gray-100">

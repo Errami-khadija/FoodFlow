@@ -10,7 +10,12 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
-{
+{   
+    function index(){
+        return view('restaurant_interface.index',[
+            'section' => 'restaurant_interface.sections.settings.index',
+        ]);
+    }
     /**
      * Display the user's profile form.
      */

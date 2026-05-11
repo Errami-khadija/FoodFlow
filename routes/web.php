@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
 use App\Http\Controllers\Restaurant\CategoryController;
 use App\Http\Controllers\Restaurant\MenuController;
+use App\Http\Controllers\Restaurant\AnalyticsController;
 use App\Http\Controllers\Restaurant\OrdersController as RestaurantOrdersController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\Customer\CartController;
@@ -77,6 +78,8 @@ Route::middleware(['auth', 'role:restaurant'])
 
                 Route::get('/orders/{id}', [RestaurantOrdersController::class, 'show'])
             ->name('restaurant.orders.show');
+            Route::get('/analytics', [AnalyticsController::class, 'index'])->name('restaurant.analytics');
+            Route::get('/settings', [ProfileController::class, 'index'])->name('restaurant.settings');
 
     });
 

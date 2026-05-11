@@ -1,5 +1,5 @@
 <!-- Reviews Page -->
-     <div id="page-reviews" class="page hidden">
+     <div id="page-reviews" class="page">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div class="flex items-center gap-4">

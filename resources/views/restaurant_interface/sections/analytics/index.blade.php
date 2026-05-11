@@ -1,4 +1,4 @@
-<div id="page-analytics" class="page hidden">
+<div id="page-analytics" class="page">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"><!-- Revenue Graph -->
        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div class="flex items-center justify-between mb-6">
@@ -8,24 +8,9 @@
          </div>
         </div>
         <div class="h-64 flex items-end justify-between gap-2">
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg" style="height: 40%"></div><span class="text-xs text-gray-400 mt-2">Jan</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg" style="height: 55%"></div><span class="text-xs text-gray-400 mt-2">Feb</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg" style="height: 45%"></div><span class="text-xs text-gray-400 mt-2">Mar</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg" style="height: 70%"></div><span class="text-xs text-gray-400 mt-2">Apr</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg" style="height: 85%"></div><span class="text-xs text-gray-400 mt-2">May</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg" style="height: 100%"></div><span class="text-xs text-gray-400 mt-2">Jun</span>
-         </div>
+     <canvas id="revenueChart" height="100"></canvas>
+        
+      
         </div>
        </div><!-- Orders Per Day -->
        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -36,27 +21,8 @@
          </div>
         </div>
         <div class="h-64 flex items-end justify-between gap-3">
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 50%"></div><span class="text-xs text-gray-400 mt-2">Mon</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 65%"></div><span class="text-xs text-gray-400 mt-2">Tue</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 55%"></div><span class="text-xs text-gray-400 mt-2">Wed</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 75%"></div><span class="text-xs text-gray-400 mt-2">Thu</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 90%"></div><span class="text-xs text-gray-400 mt-2">Fri</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 100%"></div><span class="text-xs text-gray-400 mt-2">Sat</span>
-         </div>
-         <div class="flex-1 flex flex-col items-center">
-          <div class="chart-bar w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-lg" style="height: 80%"></div><span class="text-xs text-gray-400 mt-2">Sun</span>
-         </div>
+      <canvas id="ordersChart" height="100"></canvas>
+
         </div>
        </div>
       </div><!-- Top Selling Items -->
@@ -67,7 +33,75 @@
          <p class="text-sm text-gray-400">Best performers this month</p>
         </div>
        </div>
-       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" id="top-items-grid">
+@foreach($topItems as $item)
+   <div class="bg-gray-50 p-4 rounded-xl flex items-center gap-4">
+         {{-- Image --}}
+        <img 
+            src="{{ asset('storage/' . $item->menu->image) }}" 
+            alt="{{ $item->menu->name }}"
+            class="w-16 h-16 object-cover rounded-lg"
+        >
+        <h4 class="font-semibold text-gray-800">
+            {{ $item->menu->name ?? 'Unknown' }}
+        </h4>
+        <p class="text-sm text-gray-500">
+            Sold: {{ $item->total }}
+        </p>
+    </div>
+@endforeach
        </div>
       </div>
      </div>
+
+<script>
+    const months = @json($months);
+    const revenue = @json($revenue);
+    const orders = @json($ordersPerDay);
+</script>
+<script>
+const ctx1 = document.getElementById('revenueChart').getContext('2d');
+
+new Chart(ctx1, {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Revenue',
+            data: revenue,
+            borderColor: '#f97316',
+            backgroundColor: 'rgba(249, 115, 22, 0.2)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true
+            }
+        }
+    }
+});
+const ctx2 = document.getElementById('ordersChart').getContext('2d');
+
+new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+            label: 'Orders',
+            data: orders,
+            backgroundColor: '#3b82f6'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true
+            }
+        }
+    }
+});
+</script>
