@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Menu;
 use App\Models\Category;
+use App\Models\Review;
 
 class Restaurant extends Model
 {   use HasFactory;
@@ -36,5 +37,10 @@ public function categories()
 {
     return $this->hasMany(Category::class);
 
+}
+
+public function reviews()
+{
+    return $this->hasMany(Review::class);
 }
 }

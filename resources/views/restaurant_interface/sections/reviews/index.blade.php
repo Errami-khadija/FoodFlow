@@ -8,7 +8,7 @@
           </svg>
          </div>
          <div>
-          <h3 class="text-3xl font-bold text-gray-800">4.8</h3>
+          <h3 class="text-3xl font-bold text-gray-800">{{ $averageRating }}</h3>
           <p class="text-sm text-gray-400">Average Rating</p>
          </div>
         </div>
@@ -20,7 +20,7 @@
           </svg>
          </div>
          <div>
-          <h3 class="text-3xl font-bold text-gray-800">284</h3>
+          <h3 class="text-3xl font-bold text-gray-800">{{ $totalReviews }}</h3>
           <p class="text-sm text-gray-400">Total Reviews</p>
          </div>
         </div>
@@ -32,7 +32,7 @@
           </svg>
          </div>
          <div>
-          <h3 class="text-3xl font-bold text-gray-800">12</h3>
+          <h3 class="text-3xl font-bold text-gray-800">{{ $pendingReplies }}</h3>
           <p class="text-sm text-gray-400">Pending Replies</p>
          </div>
         </div>
@@ -43,6 +43,82 @@
         <h3 class="font-bold text-gray-800 text-lg">Recent Reviews</h3>
        </div>
        <div id="reviews-list" class="divide-y divide-gray-100">
+        @foreach ($reviews as $review)
+         <div class="p-6">
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+           </div>
+           <div>
+            <h4 class="font-bold text-gray-800">{{ $review->name }}</h4>
+            <p class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</p>
+            <p class="text-gray-600 mt-2">{{ $review->comment }}</p>
+
+            @if(!$review->reply)
+    <button 
+        onclick="openReplyModal({{ $review->id }})"
+        class="mt-3 text-sm bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-lg transition"
+    >
+        Reply
+    </button>
+@endif
+            @if ($review->reply)
+             <div class="mt-4 p-4 bg-blue-100 rounded-lg">
+              <p class="text-blue-800 font-medium">Reply:</p>
+              <p class="text-blue-600">{{ $review->reply }}</p>
+             </div>
+            @endif
+           </div>
+          </div>
+         </div>
+        @endforeach
        </div>
       </div>
      </div>
+
+<div id="replyModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+    
+    <div class="bg-white w-full max-w-md rounded-xl p-6">
+        <h2 class="text-lg font-bold mb-4">Write Reply</h2>
+
+        <form id="replyForm" method="POST">
+            @csrf
+
+            <textarea 
+                name="reply"
+                class="w-full border rounded-lg p-3"
+                rows="4"
+                placeholder="Write your reply..."
+                required
+            ></textarea>
+
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" onclick="closeReplyModal()" class="px-4 py-2 bg-gray-200 rounded-lg">
+                    Cancel
+                </button>
+
+                <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded-lg">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+let currentReviewId = null;
+
+function openReplyModal(reviewId) {
+    currentReviewId = reviewId;
+
+    const form = document.getElementById('replyForm');
+    form.action = `/restaurant/reviews/${reviewId}/reply`;
+
+    document.getElementById('replyModal').classList.remove('hidden');
+}
+
+function closeReplyModal() {
+    document.getElementById('replyModal').classList.add('hidden');
+}
+</script>
