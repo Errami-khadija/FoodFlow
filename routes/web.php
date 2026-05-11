@@ -10,6 +10,7 @@ use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardCo
 use App\Http\Controllers\Restaurant\CategoryController;
 use App\Http\Controllers\Restaurant\MenuController;
 use App\Http\Controllers\Restaurant\AnalyticsController;
+use App\Http\Controllers\Restaurant\SettingController;
 use App\Http\Controllers\Restaurant\ReviewController as RestaurantReviewController;
 use App\Http\Controllers\Restaurant\OrdersController as RestaurantOrdersController;
 use App\Http\Controllers\Customer\HomeController as CustomerHomeController;
@@ -82,7 +83,9 @@ Route::middleware(['auth', 'role:restaurant'])
             Route::get('/reviews', [RestaurantReviewController::class, 'index'])->name('restaurant.reviews');
 Route::post('/reviews/{id}/reply', [RestaurantReviewController::class, 'reply']);
             Route::get('/analytics', [AnalyticsController::class, 'index'])->name('restaurant.analytics');
-            Route::get('/settings', [ProfileController::class, 'index'])->name('restaurant.settings');
+            Route::get('settings', [SettingController::class, 'index'])->name('restaurant.settings');
+            Route::put('/settings', [SettingController::class, 'update'])
+    ->name('restaurant.settings.update');
 
     });
 
