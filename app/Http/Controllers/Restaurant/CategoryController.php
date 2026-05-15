@@ -18,7 +18,9 @@ class CategoryController extends Controller
 
    return view('restaurant_interface.index', [
         'section' => 'restaurant_interface.sections.categories.index', 
-        'categories' => $categories
+        'categories' => $categories,
+            'pageTitle' => 'Categories',
+    'pageSubtitle' => "Manage your restaurant menu categories"
     ]);
 }
 

@@ -15,7 +15,9 @@ class SettingController extends Controller
         $restaurant = auth()->user()->restaurant;
         return view('restaurant_interface.index', [
             'section' => 'restaurant_interface.sections.settings.index',
-            'restaurant' => $restaurant
+            'restaurant' => $restaurant,
+                'pageTitle' => 'Settings',
+    'pageSubtitle' => "Manage your restaurant information and preferences"
         ]);
     }
     public function update(Request $request)

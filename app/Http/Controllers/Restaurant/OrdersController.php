@@ -28,6 +28,8 @@ class OrdersController extends Controller
      return view('restaurant_interface.index', [
         'section' => 'restaurant_interface.sections.orders.index',
         'orders' => $orders,
+         'pageTitle' => 'Orders',
+    'pageSubtitle' => "Manage your restaurant orders"
     ]);
 }
 

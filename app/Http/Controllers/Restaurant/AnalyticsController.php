@@ -58,7 +58,9 @@ for ($i = 0; $i < 7; $i++) {
             'months'=>$months,
              'revenue'=>$revenue,
              'ordersPerDay'=>$ordersPerDay,
-             'topItems'=>$topItems
+             'topItems'=>$topItems,
+                'pageTitle' => 'Analytics',
+    'pageSubtitle' => "Insights into your restaurant's performance"
 
         ] 
             

@@ -1,3 +1,4 @@
+
 <div id="page-dashboard" class="page fade-in"><!-- Stats Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
        <div class="card-hover bg-white rounded-2xl p-6 shadow-sm border border-gray-100">

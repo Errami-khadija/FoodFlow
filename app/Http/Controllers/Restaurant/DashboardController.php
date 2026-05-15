@@ -82,6 +82,8 @@ $data = $last7Days->pluck('total');
         'pendingStroke' => $pendingStroke,
         'preparingStroke' => $preparingStroke,
         'deliveredStroke' => $deliveredStroke,
+         'pageTitle' => 'Dashboard',
+    'pageSubtitle' => "Welcome back! Here's what's happening today."
     ]);
     }
 }

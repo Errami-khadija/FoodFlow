@@ -37,7 +37,9 @@ class ReviewController extends Controller
             'averageRating' => $averageRating ?? 0,
             'totalReviews' => $totalReviews,
             'pendingReplies' => $pendingReplies,
-            'reviews' => $reviews
+            'reviews' => $reviews,
+                'pageTitle' => 'Reviews',
+    'pageSubtitle' => "Manage your restaurant reviews and customer feedback"
         ]);
     }
 

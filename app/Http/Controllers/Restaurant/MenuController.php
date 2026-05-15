@@ -22,7 +22,9 @@ class MenuController extends Controller
          return view('restaurant_interface.index', [
         'section' => 'restaurant_interface.sections.menu.index',
         'menus' => $menus,
-        'categories' => $categories
+        'categories' => $categories,
+            'pageTitle' => 'Menu',
+    'pageSubtitle' => "Manage your restaurant menu items"
     ]);
     }
 
