@@ -28,8 +28,10 @@
         {{ $initials }}
        </div>
        <div class="hidden md:block">
-        <p class="font-semibold text-gray-800 text-sm">{{ $name }}</p>
-        <p class="text-xs text-gray-400">Restaurant Owner</p>
+        <a href="{{ route('restaurant.profile') }}" class="block">
+         <p class="font-semibold text-gray-800 text-sm">{{ $name }}</p>
+         <p class="text-xs text-gray-400">Restaurant Owner</p>
+        </a>
        </div>
       </div>
      </div>

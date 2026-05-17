@@ -86,6 +86,7 @@ Route::post('/reviews/{id}/reply', [RestaurantReviewController::class, 'reply'])
             Route::get('settings', [SettingController::class, 'index'])->name('restaurant.settings');
             Route::put('/settings', [SettingController::class, 'update'])
     ->name('restaurant.settings.update');
+    Route::get('/profile', [ProfileController::class, 'restaurantOwnerProfile'])->name('restaurant.profile');
 
     });
 
