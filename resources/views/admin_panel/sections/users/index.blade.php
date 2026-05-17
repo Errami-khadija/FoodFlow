@@ -34,7 +34,7 @@ onkeyup="this.form.submit()"
          <thead class="bg-gray-50">
           <tr>
            <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">User</th>
-           <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+           <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Phone</th>
            <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Orders</th>
            <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Spent</th>
            <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Joined</th>
@@ -51,18 +51,18 @@ onkeyup="this.form.submit()"
 <div class="flex items-center gap-3">
 
 <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-{{ strtoupper(substr($user->name,0,1)) }}
+{{ strtoupper(substr($user->full_name,0,1)) }}
 </div>
 
 <p class="font-medium text-gray-900">
-{{ $user->name }}
+{{ $user->full_name }}
 </p>
 
 </div>
 </td>
 
 <td class="px-6 py-4 text-sm text-gray-600">
-{{ $user->email }}
+{{ $user->phone }}
 </td>
 
 <td class="px-6 py-4 text-sm text-gray-600">
@@ -70,22 +70,22 @@ onkeyup="this.form.submit()"
 </td>
 
 <td class="px-6 py-4 text-sm font-medium text-gray-900">
-$0
+${{ number_format($user->total_spent ?? 0, 2) }}
 </td>
 
 <td class="px-6 py-4 text-sm text-gray-500">
-{{ $user->created_at->format('M d, Y') }}
+{{ $user->first_order_date ?? 'N/A' }}
 </td>
 
 <td class="px-6 py-4">
 
-@if($user->status == 'active')
+@if($user->most_payment_method == 'card')
 <span class="px-3 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
-Active
+Card
 </span>
 @else
-<span class="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
-Inactive
+<span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-700 rounded-full">
+Cash
 </span>
 @endif
 

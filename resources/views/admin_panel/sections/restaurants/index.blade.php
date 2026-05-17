@@ -76,7 +76,7 @@ rounded-full">
 
 
 <td class="px-6 py-4 text-sm text-gray-600">
-{{ $restaurant->orders_count ?? 0 }}
+{{ $restaurant->orders()->count() ?? 0 }}
 </td>
 
 <td class="px-6 py-4">
@@ -93,7 +93,11 @@ rating: '{{ $restaurant->rating ?? 'N/A' }}',
 email: '{{ $restaurant->owner->email ?? 'N/A' }}',
 address: '{{ $restaurant->address ?? 'N/A' }}',
 cuisine: '{{ $restaurant->cuisine_type ?? 'N/A' }}',
-joined: '{{ $restaurant->created_at->format('M d, Y') }}'
+joined: '{{ $restaurant->created_at->format('M d, Y') }}',
+orders: '{{ $restaurant->orders()->count() }}',
+revenue: '${{ number_format($restaurant->orders()->where('status', 'delivered')->sum('total_price'), 2) }}',
+avgDelivery: '{{ $restaurant->avg('deliveryTime') ? round($restaurant->avg('deliveryTime') / 60, 2) . " mins" : "N/A" }}',
+commission: '${{ number_format($restaurant->orders()->where('status', 'delivered')->sum('total_price') * 0.1, 2) }}',
 })"
         class="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-lg transition">
         View
@@ -183,9 +187,8 @@ joined: '{{ $restaurant->created_at->format('M d, Y') }}'
        </div>
        <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-         <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 00.948.684l1.498 4.493a1 1 0 00.502.756l2.04 1.084a15.045 15.045 0 01-2.117 3.912 15.028 15.028 0 003.8 2.939l-2.04 1.084a1 1 0 00-.502.756l-1.498 4.493a1 1 0 00-.948.684H5a2 2 0 01-2-2V5z" />
-         </svg>
+        <svg class="w-5 h-5 text-green-600 fill-current" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M224.2 89C216.3 70.1 195.7 60.1 176.1 65.4L170.6 66.9C106 84.5 50.8 147.1 66.9 223.3C104 398.3 241.7 536 416.7 573.1C493 589.3 555.5 534 573.1 469.4L574.6 463.9C580 444.2 569.9 423.6 551.1 415.8L453.8 375.3C437.3 368.4 418.2 373.2 406.8 387.1L368.2 434.3C297.9 399.4 241.3 341 208.8 269.3L253 233.3C266.9 222 271.6 202.9 264.8 186.3L224.2 89z"/></svg>
         </div>
         <div>
          <p class="text-xs text-gray-500">Phone</p>

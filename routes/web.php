@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Restaurant\DashboardController as RestaurantDashboardController;
 use App\Http\Controllers\Restaurant\CategoryController;
 use App\Http\Controllers\Restaurant\MenuController;
@@ -99,11 +101,21 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('admin.dashboard');
         Route::patch('/restaurants/{id}/approve', [RestaurantController::class, 'approve'])
-    ->name('admin.restaurants.approve');
+            ->name('admin.restaurants.approve');
        Route::get('/users', [UserController::class, 'index'])
             ->name('admin.users');
        Route::get('/orders', [OrderController::class, 'index'])
             ->name('admin.orders');
+       Route::get('/payments', [AdminPaymentController::class, 'index'])
+            ->name('admin.payments');
+       Route::get('/payments/download', [AdminPaymentController::class, 'download'])
+            ->name('admin.payments.download');
+       Route::get('/reports', [ReportController::class, 'index'])
+            ->name('admin.reports');
+       Route::get('/reports/download', [ReportController::class, 'download'])
+            ->name('admin.reports.download');
+      
+         Route::get('/settings', [ProfileController::class, 'adminProfile'])->name('admin.profile');
 
     });
 

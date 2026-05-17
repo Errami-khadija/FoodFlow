@@ -14,17 +14,11 @@ class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none fo
 
 <option value="">All Status</option>
 
-<option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
-Completed
-</option>
-
-<option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
-Pending
-</option>
-
-<option value="canceled" {{ request('status') == 'canceled' ? 'selected' : '' }}>
-Cancelled
-</option>
+ <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+        <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+        <option value="preparing" {{ request('status') == 'preparing' ? 'selected' : '' }}>Preparing</option>
+        <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>Delivered</option>
 
 </select>
 </form>
@@ -54,7 +48,7 @@ Cancelled
 </td>
 
 <td class="px-6 py-4 text-sm text-gray-600">
-{{ $order->user->name ?? 'Unknown' }}
+{{ $order->full_name ?? 'Unknown' }}
 </td>
 
 <td class="px-6 py-4 text-sm text-gray-600">
@@ -67,26 +61,33 @@ ${{ $order->total_price }}
 
 <td class="px-6 py-4">
 
-@if($order->status == 'completed')
+@if($order->status == 'delivered')
 <span class="px-3 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
-Completed
+Delivered
 </span>
 
 @elseif($order->status == 'pending')
 <span class="px-3 py-1 text-xs font-medium bg-amber-100 text-amber-700 rounded-full">
 Pending
 </span>
-
-@elseif($order->status == 'canceled')
-<span class="px-3 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
-Cancelled
+@elseif($order->status == 'paid')
+<span class="px-3 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
+Paid
+</span>
+@elseif($order->status == 'preparing')
+<span class="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+Preparing
+</span>
+@elseif($order->status == 'confirmed')
+<span class="px-3 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded-full">
+Confirmed
 </span>
 @endif
 
 </td>
 
 <td class="px-6 py-4 text-sm text-gray-500">
-{{ $order->created_at->diffForHumans() }}
+{{ $order->created_at->format('M d, Y') }}
 </td>
 
 </tr>

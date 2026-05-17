@@ -31,6 +31,16 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function adminProfile(Request $request): View
+    {
+        return view('admin_panel.index', [
+            'section' => 'profile.edit',
+            'user' => $request->user(),
+             'pageTitle' => 'My Profile',
+             'pageSubtitle' => 'Manage your profile information'
+        ]);
+    }
+
     /**
      * Update the user's profile information.
      */
