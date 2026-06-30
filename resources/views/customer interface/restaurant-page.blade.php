@@ -7,8 +7,8 @@
 <div class="relative h-48 sm:h-64 overflow-hidden rounded-b-2xl bg-gradient-to-br ">
     <!-- Image overlay -->
     <div class="absolute inset-0 flex items-center justify-center text-8xl bg-gradient-to-tr from-black/30 to-transparent">
-       <img src="{{ $restaurant->image ? asset('storage/' . $restaurant->image) : asset('images/default-restaurant.jpg') }}"
-     alt="{{ $restaurant->name }}"
+       <img src="{{ optional($restaurant)->image ? asset('storage/' . $restaurant->image) : asset('images/default-restaurant.jpg') }}"
+     alt="{{ optional($restaurant)->name ?? 'Restaurant' }}"
      class="h-40 w-full object-cover rounded-t-2xl">
     </div>
 
@@ -77,7 +77,7 @@
 
                
                 <div class="w-20 h-20 rounded-xl overflow-hidden">
-                    <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('images/default-food.jpg') }}"
+                    <img src="{{ optional($item)->image ? asset('storage/' . $item->image) : asset('images/default-food.jpg') }}"
                          class="w-full h-full object-cover">
                 </div>
 
