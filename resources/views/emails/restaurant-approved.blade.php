@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h2>Hi {{ $restaurant->name }},</h2>
+<h2>Hi {{ $restaurant->owner->name }},</h2>
 
 <p>🎉 Congratulations! Your restaurant has been approved on FoodFlow.</p>
 
