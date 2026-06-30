@@ -6,7 +6,9 @@
 </head>
 <body>
 
-<h2>Hi {{ optional($restaurant->owner)->name ?? 'there' }},</h2>
+{{ dd($restaurant) }}
+
+<!-- <h2>Hi {{ optional($restaurant->owner)->name ?? 'there' }},</h2> -->
 
 <p>🎉 Congratulations! Your restaurant has been approved on FoodFlow.</p>
 
