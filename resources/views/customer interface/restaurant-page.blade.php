@@ -4,7 +4,7 @@
  <div id="restaurant-page" class="pt-16 min-h-full bg-gray-50">
     <div id="restaurant-content">
 
-<div class="relative h-48 sm:h-64 overflow-hidden rounded-b-2xl bg-gradient-to-br {{ $restaurant->gradient }}">
+<div class="relative h-48 sm:h-64 overflow-hidden rounded-b-2xl bg-gradient-to-br ">
     <!-- Image overlay -->
     <div class="absolute inset-0 flex items-center justify-center text-8xl bg-gradient-to-tr from-black/30 to-transparent">
        <img src="{{ $restaurant->image ? asset('storage/' . $restaurant->image) : asset('images/default-restaurant.jpg') }}"

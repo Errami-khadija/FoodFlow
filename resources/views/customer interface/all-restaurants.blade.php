@@ -57,7 +57,7 @@
         <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" 
         onclick="window.location='{{ route('restaurant.show', $r->id) }}'">
             
-            <div class="relative h-40 bg-gradient-to-br {{ $r->gradient }} overflow-hidden">
+            <div class="relative h-40 bg-gradient-to-br overflow-hidden">
                 <div class="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">
                     <img src="{{ $r->image ? asset('storage/' . $r->image) : asset('images/default-restaurant.png') }}"
      alt="{{ $r->name }}"

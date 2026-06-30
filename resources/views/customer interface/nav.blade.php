@@ -9,7 +9,7 @@
       </div>
       <div class="hidden md:flex items-center space-x-8">
         <a href="#how-it-works" class="text-gray-600 hover:text-primary transition-colors font-medium">How It Works</a> 
-        <a href="#restaurants" class="text-gray-600 hover:text-primary transition-colors font-medium">Restaurants</a> 
+        <a href="/restaurants" class="text-gray-600 hover:text-primary transition-colors font-medium">Restaurants</a> 
         <a href="#testimonials" class="text-gray-600 hover:text-primary transition-colors font-medium">Reviews</a> 
         <a href="/restaurants" class="px-5 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-semibold hover:shadow-lg hover:shadow-orange-200 transition-all duration-300"> Get Started </a>
       </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100" onclick="toggleMobileMenu()">
@@ -18,7 +18,7 @@
      </div>
     </div><!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-     <div class="px-4 py-4 space-y-3"><a href="#how-it-works" class="block py-2 text-gray-600 hover:text-primary font-medium">How It Works</a> <a href="#restaurants" class="block py-2 text-gray-600 hover:text-primary font-medium">Restaurants</a> <a href="#testimonials" class="block py-2 text-gray-600 hover:text-primary font-medium">Reviews</a> <button onclick="navigateTo('landing')" class="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-semibold"> Get Started </button>
+     <div class="px-4 py-4 space-y-3"><a href="#how-it-works" class="block py-2 text-gray-600 hover:text-primary font-medium">How It Works</a> <a href="/restaurants" class="block py-2 text-gray-600 hover:text-primary font-medium">Restaurants</a> <a href="#testimonials" class="block py-2 text-gray-600 hover:text-primary font-medium">Reviews</a> <button onclick="navigateTo('landing')" class="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-semibold"> Get Started </button>
      </div>
     </div>
    </nav>
